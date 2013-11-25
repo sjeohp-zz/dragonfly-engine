@@ -1,0 +1,595 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		4A1E4A9A1842C25B00FEE3A7 /* Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 4A1E4A9B1842C25B00FEE3A7 /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildPhases = (
+				4A1E4AA01842C2B400FEE3A7 /* ShellScript */,
+			);
+			dependencies = (
+				4A1E4A9F1842C27100FEE3A7 /* PBXTargetDependency */,
+			);
+			name = Framework;
+			productName = Framework;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		4A1E4A721842BEDA00FEE3A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */; };
+		4A1E4A771842BEDA00FEE3A7 /* Dragonfly.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */; };
+		4A1E4A791842BEDA00FEE3A7 /* Dragonfly.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4A781842BEDA00FEE3A7 /* Dragonfly.m */; };
+		4A1E4A801842BEDA00FEE3A7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A7F1842BEDA00FEE3A7 /* XCTest.framework */; };
+		4A1E4A811842BEDA00FEE3A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */; };
+		4A1E4A831842BEDA00FEE3A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A821842BEDA00FEE3A7 /* UIKit.framework */; };
+		4A1E4A861842BEDA00FEE3A7 /* libDragonfly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A6E1842BEDA00FEE3A7 /* libDragonfly.a */; };
+		4A1E4A8C1842BEDA00FEE3A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A1E4A8A1842BEDA00FEE3A7 /* InfoPlist.strings */; };
+		4A1E4A8E1842BEDA00FEE3A7 /* DragonflyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4A8D1842BEDA00FEE3A7 /* DragonflyTests.m */; };
+		4A1E4A981842BF4C00FEE3A7 /* Dragonfly.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AAB1842ECCA00FEE3A7 /* DFQuadtree.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AA91842ECCA00FEE3A7 /* DFQuadtree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AAC1842ECCA00FEE3A7 /* DFQuadtree.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AAA1842ECCA00FEE3A7 /* DFQuadtree.m */; };
+		4A1E4AAF1842ED0000FEE3A7 /* DFLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AAD1842ED0000FEE3A7 /* DFLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AB01842ED0000FEE3A7 /* DFLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */; };
+		4A1E4AB31842ED2300FEE3A7 /* DFGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AB41842ED2300FEE3A7 /* DFGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */; };
+		4A1E4AB71842ED5A00FEE3A7 /* DFTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AB81842ED5A00FEE3A7 /* DFTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */; };
+		4A1E4ABB1842ED8B00FEE3A7 /* DFCollidable.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4ABC1842ED8B00FEE3A7 /* DFCollidable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */; };
+		4A1E4ABF1842EDD200FEE3A7 /* DFRectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AC01842EDD200FEE3A7 /* DFRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */; };
+		4A1E4AC31842EE0200FEE3A7 /* DFEllipse.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AC41842EE0200FEE3A7 /* DFEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */; };
+		4A1E4AC71842EE2B00FEE3A7 /* DFRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4AC81842EE2B00FEE3A7 /* DFRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */; };
+		4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A1E4ACC1842EE4A00FEE3A7 /* DFUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4ACA1842EE4A00FEE3A7 /* DFUtil.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4A1E4A841842BEDA00FEE3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A1E4A661842BEDA00FEE3A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A1E4A6D1842BEDA00FEE3A7;
+			remoteInfo = Dragonfly;
+		};
+		4A1E4A9E1842C27100FEE3A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A1E4A661842BEDA00FEE3A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A1E4A6D1842BEDA00FEE3A7;
+			remoteInfo = Dragonfly;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4A1E4A6C1842BEDA00FEE3A7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				4A1E4A771842BEDA00FEE3A7 /* Dragonfly.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4A1E4A6E1842BEDA00FEE3A7 /* libDragonfly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDragonfly.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4A1E4A751842BEDA00FEE3A7 /* Dragonfly-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dragonfly-Prefix.pch"; sourceTree = "<group>"; };
+		4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dragonfly.h; sourceTree = "<group>"; };
+		4A1E4A781842BEDA00FEE3A7 /* Dragonfly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dragonfly.m; sourceTree = "<group>"; };
+		4A1E4A7E1842BEDA00FEE3A7 /* DragonflyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DragonflyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A1E4A7F1842BEDA00FEE3A7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		4A1E4A821842BEDA00FEE3A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		4A1E4A891842BEDA00FEE3A7 /* DragonflyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DragonflyTests-Info.plist"; sourceTree = "<group>"; };
+		4A1E4A8B1842BEDA00FEE3A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4A1E4A8D1842BEDA00FEE3A7 /* DragonflyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DragonflyTests.m; sourceTree = "<group>"; };
+		4A1E4AA91842ECCA00FEE3A7 /* DFQuadtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFQuadtree.h; sourceTree = "<group>"; };
+		4A1E4AAA1842ECCA00FEE3A7 /* DFQuadtree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFQuadtree.m; sourceTree = "<group>"; };
+		4A1E4AAD1842ED0000FEE3A7 /* DFLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLinkedList.h; sourceTree = "<group>"; };
+		4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLinkedList.m; sourceTree = "<group>"; };
+		4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGameObject.h; sourceTree = "<group>"; };
+		4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFGameObject.m; sourceTree = "<group>"; };
+		4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTexture.h; sourceTree = "<group>"; };
+		4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTexture.m; sourceTree = "<group>"; };
+		4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCollidable.h; sourceTree = "<group>"; };
+		4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCollidable.m; sourceTree = "<group>"; };
+		4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFRectangle.h; sourceTree = "<group>"; };
+		4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFRectangle.m; sourceTree = "<group>"; };
+		4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFEllipse.h; sourceTree = "<group>"; };
+		4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFEllipse.m; sourceTree = "<group>"; };
+		4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFRender.h; sourceTree = "<group>"; };
+		4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFRender.m; sourceTree = "<group>"; };
+		4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUtil.h; sourceTree = "<group>"; };
+		4A1E4ACA1842EE4A00FEE3A7 /* DFUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUtil.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4A1E4A6B1842BEDA00FEE3A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4A721842BEDA00FEE3A7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A1E4A7B1842BEDA00FEE3A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4A801842BEDA00FEE3A7 /* XCTest.framework in Frameworks */,
+				4A1E4A831842BEDA00FEE3A7 /* UIKit.framework in Frameworks */,
+				4A1E4A861842BEDA00FEE3A7 /* libDragonfly.a in Frameworks */,
+				4A1E4A811842BEDA00FEE3A7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4A1E4A651842BEDA00FEE3A7 = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A731842BEDA00FEE3A7 /* Dragonfly */,
+				4A1E4A871842BEDA00FEE3A7 /* DragonflyTests */,
+				4A1E4A701842BEDA00FEE3A7 /* Frameworks */,
+				4A1E4A6F1842BEDA00FEE3A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4A1E4A6F1842BEDA00FEE3A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A6E1842BEDA00FEE3A7 /* libDragonfly.a */,
+				4A1E4A7E1842BEDA00FEE3A7 /* DragonflyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A1E4A701842BEDA00FEE3A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */,
+				4A1E4A7F1842BEDA00FEE3A7 /* XCTest.framework */,
+				4A1E4A821842BEDA00FEE3A7 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4A1E4A731842BEDA00FEE3A7 /* Dragonfly */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */,
+				4A1E4A781842BEDA00FEE3A7 /* Dragonfly.m */,
+				4A1E4AA91842ECCA00FEE3A7 /* DFQuadtree.h */,
+				4A1E4AAA1842ECCA00FEE3A7 /* DFQuadtree.m */,
+				4A1E4AAD1842ED0000FEE3A7 /* DFLinkedList.h */,
+				4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */,
+				4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */,
+				4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */,
+				4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */,
+				4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */,
+				4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */,
+				4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */,
+				4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */,
+				4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */,
+				4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */,
+				4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */,
+				4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */,
+				4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */,
+				4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */,
+				4A1E4ACA1842EE4A00FEE3A7 /* DFUtil.m */,
+				4A1E4A741842BEDA00FEE3A7 /* Supporting Files */,
+			);
+			path = Dragonfly;
+			sourceTree = "<group>";
+		};
+		4A1E4A741842BEDA00FEE3A7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A751842BEDA00FEE3A7 /* Dragonfly-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4A1E4A871842BEDA00FEE3A7 /* DragonflyTests */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A8D1842BEDA00FEE3A7 /* DragonflyTests.m */,
+				4A1E4A881842BEDA00FEE3A7 /* Supporting Files */,
+			);
+			path = DragonflyTests;
+			sourceTree = "<group>";
+		};
+		4A1E4A881842BEDA00FEE3A7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A1E4A891842BEDA00FEE3A7 /* DragonflyTests-Info.plist */,
+				4A1E4A8A1842BEDA00FEE3A7 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4A1E4A971842BF4400FEE3A7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4AAB1842ECCA00FEE3A7 /* DFQuadtree.h in Headers */,
+				4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */,
+				4A1E4AC71842EE2B00FEE3A7 /* DFRender.h in Headers */,
+				4A1E4AB71842ED5A00FEE3A7 /* DFTexture.h in Headers */,
+				4A1E4AC31842EE0200FEE3A7 /* DFEllipse.h in Headers */,
+				4A1E4AAF1842ED0000FEE3A7 /* DFLinkedList.h in Headers */,
+				4A1E4ABF1842EDD200FEE3A7 /* DFRectangle.h in Headers */,
+				4A1E4A981842BF4C00FEE3A7 /* Dragonfly.h in Headers */,
+				4A1E4ABB1842ED8B00FEE3A7 /* DFCollidable.h in Headers */,
+				4A1E4AB31842ED2300FEE3A7 /* DFGameObject.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4A1E4A6D1842BEDA00FEE3A7 /* Dragonfly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A1E4A911842BEDA00FEE3A7 /* Build configuration list for PBXNativeTarget "Dragonfly" */;
+			buildPhases = (
+				4A1E4A6A1842BEDA00FEE3A7 /* Sources */,
+				4A1E4A6B1842BEDA00FEE3A7 /* Frameworks */,
+				4A1E4A6C1842BEDA00FEE3A7 /* CopyFiles */,
+				4A1E4A971842BF4400FEE3A7 /* Headers */,
+				4A1E4A991842C12D00FEE3A7 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dragonfly;
+			productName = Dragonfly;
+			productReference = 4A1E4A6E1842BEDA00FEE3A7 /* libDragonfly.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		4A1E4A7D1842BEDA00FEE3A7 /* DragonflyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A1E4A941842BEDA00FEE3A7 /* Build configuration list for PBXNativeTarget "DragonflyTests" */;
+			buildPhases = (
+				4A1E4A7A1842BEDA00FEE3A7 /* Sources */,
+				4A1E4A7B1842BEDA00FEE3A7 /* Frameworks */,
+				4A1E4A7C1842BEDA00FEE3A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A1E4A851842BEDA00FEE3A7 /* PBXTargetDependency */,
+			);
+			name = DragonflyTests;
+			productName = DragonflyTests;
+			productReference = 4A1E4A7E1842BEDA00FEE3A7 /* DragonflyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4A1E4A661842BEDA00FEE3A7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Joseph Mark";
+			};
+			buildConfigurationList = 4A1E4A691842BEDA00FEE3A7 /* Build configuration list for PBXProject "Dragonfly" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4A1E4A651842BEDA00FEE3A7;
+			productRefGroup = 4A1E4A6F1842BEDA00FEE3A7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4A1E4A6D1842BEDA00FEE3A7 /* Dragonfly */,
+				4A1E4A7D1842BEDA00FEE3A7 /* DragonflyTests */,
+				4A1E4A9A1842C25B00FEE3A7 /* Framework */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4A1E4A7C1842BEDA00FEE3A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4A8C1842BEDA00FEE3A7 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4A1E4A991842C12D00FEE3A7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
+		};
+		4A1E4AA01842C2B400FEE3A7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nSF_OTHER_PLATFORM=iphonesimulator\nelse\nSF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\nSF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\necho \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\n# Build the other platform.\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4A1E4A6A1842BEDA00FEE3A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4AB81842ED5A00FEE3A7 /* DFTexture.m in Sources */,
+				4A1E4AB41842ED2300FEE3A7 /* DFGameObject.m in Sources */,
+				4A1E4AAC1842ECCA00FEE3A7 /* DFQuadtree.m in Sources */,
+				4A1E4AC01842EDD200FEE3A7 /* DFRectangle.m in Sources */,
+				4A1E4AC81842EE2B00FEE3A7 /* DFRender.m in Sources */,
+				4A1E4ACC1842EE4A00FEE3A7 /* DFUtil.m in Sources */,
+				4A1E4AB01842ED0000FEE3A7 /* DFLinkedList.m in Sources */,
+				4A1E4ABC1842ED8B00FEE3A7 /* DFCollidable.m in Sources */,
+				4A1E4AC41842EE0200FEE3A7 /* DFEllipse.m in Sources */,
+				4A1E4A791842BEDA00FEE3A7 /* Dragonfly.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A1E4A7A1842BEDA00FEE3A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A1E4A8E1842BEDA00FEE3A7 /* DragonflyTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4A1E4A851842BEDA00FEE3A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A1E4A6D1842BEDA00FEE3A7 /* Dragonfly */;
+			targetProxy = 4A1E4A841842BEDA00FEE3A7 /* PBXContainerItemProxy */;
+		};
+		4A1E4A9F1842C27100FEE3A7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A1E4A6D1842BEDA00FEE3A7 /* Dragonfly */;
+			targetProxy = 4A1E4A9E1842C27100FEE3A7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4A1E4A8A1842BEDA00FEE3A7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4A1E4A8B1842BEDA00FEE3A7 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4A1E4A8F1842BEDA00FEE3A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(PROJECT_NAME)Headers";
+				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
+			};
+			name = Debug;
+		};
+		4A1E4A901842BEDA00FEE3A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PUBLIC_HEADERS_FOLDER_PATH = "$(PROJECT_NAME)Headers";
+				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4A1E4A921842BEDA00FEE3A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Dragonfly.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dragonfly/Dragonfly-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4A1E4A931842BEDA00FEE3A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Dragonfly.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dragonfly/Dragonfly-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4A1E4A951842BEDA00FEE3A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dragonfly/Dragonfly-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "DragonflyTests/DragonflyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		4A1E4A961842BEDA00FEE3A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Dragonfly/Dragonfly-Prefix.pch";
+				INFOPLIST_FILE = "DragonflyTests/DragonflyTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		4A1E4A9C1842C25B00FEE3A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4A1E4A9D1842C25B00FEE3A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4A1E4A691842BEDA00FEE3A7 /* Build configuration list for PBXProject "Dragonfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A1E4A8F1842BEDA00FEE3A7 /* Debug */,
+				4A1E4A901842BEDA00FEE3A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A1E4A911842BEDA00FEE3A7 /* Build configuration list for PBXNativeTarget "Dragonfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A1E4A921842BEDA00FEE3A7 /* Debug */,
+				4A1E4A931842BEDA00FEE3A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4A1E4A941842BEDA00FEE3A7 /* Build configuration list for PBXNativeTarget "DragonflyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A1E4A951842BEDA00FEE3A7 /* Debug */,
+				4A1E4A961842BEDA00FEE3A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4A1E4A9B1842C25B00FEE3A7 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A1E4A9C1842C25B00FEE3A7 /* Debug */,
+				4A1E4A9D1842C25B00FEE3A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4A1E4A661842BEDA00FEE3A7 /* Project object */;
+}
