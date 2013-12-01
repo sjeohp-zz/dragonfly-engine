@@ -65,3 +65,14 @@ DFTextureData* DFTextureLoad(NSString *fileName)
     
     return texture;
 }
+
+void DFTextureFree(DFTextureData* data)
+{
+    DFTextureData* temp;
+    DFTextureData* curr = data;
+    while (curr != NULL){
+        temp = curr;
+        curr = curr->next;
+        free(temp);
+    }
+}

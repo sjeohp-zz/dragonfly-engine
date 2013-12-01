@@ -76,3 +76,14 @@ void DFCollidableCollisionBetween(DFCollidableData* objA, DFCollidableData* objB
 {
     
 }
+
+void DFCollidableFree(DFCollidableData* data)
+{
+    DFCollidableData* temp;
+    DFCollidableData* curr = data;
+    while (curr != NULL){
+        temp = curr;
+        curr = curr->next;
+        free(temp);
+    }
+}

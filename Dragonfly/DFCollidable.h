@@ -27,3 +27,4 @@ BOOL                DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableDat
 BOOL                DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ);
 BOOL                DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B);
 void                DFCollidableCollisionBetween(DFCollidableData* objA, DFCollidableData* objB);
+void                DFCollidableFree(DFCollidableData* data);

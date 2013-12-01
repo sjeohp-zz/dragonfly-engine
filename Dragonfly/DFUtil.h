@@ -10,6 +10,7 @@
 #import <GLKit/GLKit.h>
 
 #define DISTANCE_BETWEEN(Ax, Ay, Bx, By)    sqrtf((Ax - Bx) * (Ax - Bx) + (Ay - By) * (Ay - By))
+#define CLOCKWISE(A,B)                      A.y * B.x < A.x * B.y ? YES : NO
 
 typedef struct DFPoint {
     GLfloat x;

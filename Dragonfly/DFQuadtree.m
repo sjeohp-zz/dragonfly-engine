@@ -180,3 +180,19 @@ DFLinkedList* DFQuadtreeCheckCollisions(DFQuadtree *qt)
     DFLinkedList* objectsForParent = DFLinkedListAppendList(objectsFromSubtrees, qt->contents);
     return objectsForParent;
 }
+
+void DFQuadtreeFree(DFQuadtree *qt)
+{
+    if (NULL == qt){
+        return;
+    }
+    if (NULL != qt->subtrees[0]){
+        for (int i = 0; i < 4; i++){
+            DFQuadtreeFree(qt->subtrees[i]);
+        }
+    }
+    if (NULL != qt->contents){
+        DFLinkedListFree(qt->contents);
+    }
+    free(qt);
+}

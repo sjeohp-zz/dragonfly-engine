@@ -24,3 +24,4 @@ typedef struct DFEllipseData {
 }   DFEllipseData;
 
 DFEllipseData*      DFEllipseMake(GLfloat x, GLfloat y, GLfloat radius);
+void                DFEllipseFree(DFEllipseData* data);

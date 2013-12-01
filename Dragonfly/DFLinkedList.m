@@ -47,7 +47,7 @@ DFLinkedList* listAppendList(DFLinkedList* list, DFLinkedList* listToAppend)
     return first;
 }
 
-int listSize(DFLinkedList*list)
+int DFLinkedListSize(DFLinkedList*list)
 {
     DFLinkedList* curr = list;
     int size = 0;
@@ -56,4 +56,17 @@ int listSize(DFLinkedList*list)
         size++;
     }
     return size;
+}
+
+void DFLinkedListFree(DFLinkedList *list)
+{
+    DFLinkedList *temp;
+    DFLinkedList *curr = list;
+    while (NULL != curr){
+        temp = curr;
+        curr = curr->next;
+        if (temp != NULL){
+            free(temp);
+        }
+    }
 }

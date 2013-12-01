@@ -32,3 +32,4 @@ typedef struct DFTextureData {
 }   DFTextureData;
 
 DFTextureData*      DFTextureLoad(NSString* fileName);
+void                DFTextureFree(DFTextureData* texture);

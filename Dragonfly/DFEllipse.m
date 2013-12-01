@@ -43,3 +43,14 @@ DFEllipseData* DFEllipseMake(GLfloat x, GLfloat y, GLfloat radius)
     
     return ellipse;
 }
+
+void DFEllipseFree(DFEllipseData* data)
+{
+    DFEllipseData* temp;
+    DFEllipseData* curr = data;
+    while (curr != NULL){
+        temp = curr;
+        curr = curr->next;
+        free(temp);
+    }
+}

@@ -8,6 +8,27 @@
 
 #import "DFRender.h"
 
+void DFRenderGameObject(DFGameObject* obj, GLKBaseEffect* baseEffect)
+{
+    if (obj == NULL){
+        return;
+    }
+    DFTextureData* texture = obj->textureData;
+    while (texture != NULL){
+        DFRenderTexture(texture, baseEffect);
+        texture = texture->next;
+    }
+    DFRectangleData* rect = obj->rectangleData;
+    while (rect != NULL){
+        DFRenderRectangle(obj->rectangleData, baseEffect);
+        rect = rect->next;
+    }
+    DFEllipseData* ellipse = obj->ellipseData;
+    while (ellipse != NULL){
+        DFRenderEllipse(obj->ellipseData, baseEffect);
+    }
+}
+
 void DFRenderRectangle(DFRectangleData* rect, GLKBaseEffect* baseEffect)
 {
     baseEffect.useConstantColor = NO;

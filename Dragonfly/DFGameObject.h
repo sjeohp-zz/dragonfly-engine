@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+#import <CoreMotion/CoreMotion.h>
 
 #import "DFTexture.h"
 #import "DFRectangle.h"
@@ -20,10 +21,17 @@ typedef struct DFGameObject {
     DFRectangleData*        rectangleData;
     DFEllipseData*          ellipseData;
     DFCollidableData*       collidableData;
-    DFVector3               position;
-    DFVector3               centre;
-    DFVector3               scale;
-    DFVector4               colour;
+    GLKVector3              position;
+    GLKVector3              velocity;
+    GLfloat                 rotation;
+    GLfloat                 mass;
+    GLfloat                 drag;
+    GLfloat                 thrust;
+    GLfloat                 elasticity;
+    GLuint                  maxspeed;
+    void                    (* updateWithAttitude)(struct DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
+    void                    (* updateWithTarget)(struct DFGameObject* obj, GLKVector2 target, GLfloat dT);
+    void                    (* update)(struct DFGameObject* obj, GLfloat dT);
 }   DFGameObject;
 
 DFGameObject*       DFGameObjectMake();
@@ -31,3 +39,7 @@ void                DFGameObjectAddTexture(DFGameObject* obj, DFTextureData* tex
 void                DFGameObjectAddRectangle(DFGameObject* obj, DFRectangleData* rect);
 void                DFGameObjectAddEllipse(DFGameObject* obj, DFEllipseData* ellipse);
 void                DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable);
+void                DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
+void                DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector2 target, GLfloat dT);
+void                DFGameObjectUpdate(DFGameObject* obj, GLfloat dT);
+void                DFGameObjectFree(DFGameObject* obj);

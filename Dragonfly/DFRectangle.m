@@ -68,3 +68,14 @@ DFRectangleData* DFRectangleMake(GLfloat x, GLfloat y, GLfloat width, GLfloat he
     
     return rect;
 }
+
+void DFRectangleFree(DFRectangleData* data)
+{
+    DFRectangleData* temp;
+    DFRectangleData* curr = data;
+    while (curr != NULL){
+        temp = curr;
+        curr = curr->next;
+        free(temp);
+    }
+}

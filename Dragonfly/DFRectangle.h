@@ -28,3 +28,4 @@ typedef struct DFRectangleData {
 }   DFRectangleData;
 
 DFRectangleData*    DFRectangleMake(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
+void                DFRectangleFree(DFRectangleData* rect);

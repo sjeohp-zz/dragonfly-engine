@@ -18,3 +18,4 @@ struct DFLinkedList*    DFLinkedListMake(void* data);
 struct DFLinkedList*    DFLinkedListAppendItem(DFLinkedList* list, void* data);
 struct DFLinkedList*    DFLinkedListAppendList(DFLinkedList* list, DFLinkedList* listToAppend);
 int                     DFLinkedListSize(DFLinkedList* list);
+void                    DFLinkedListFree(DFLinkedList *list);

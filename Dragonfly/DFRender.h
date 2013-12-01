@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
+#import "DFGameObject.h"
 #import "DFRectangle.h"
 #import "DFEllipse.h"
 #import "DFTexture.h"
