@@ -81,10 +81,10 @@ void DFQuadtreeInsertObject(DFQuadtree *qt, DFGameObject* obj)
             } else {
                 BOOL fit = NO;
                 for (int i = 0; i < 4; i++){
-                    if (curr->x - curr->radius > qt->subtrees[i]->x &&
-                        curr->x + curr->radius < qt->subtrees[i]->x + qt->subtrees[i]->width &&
-                        curr->y - curr->radius > qt->subtrees[i]->y &&
-                        curr->y + curr->radius < qt->subtrees[i]->y + qt->subtrees[i]->height){
+                    if (curr->position.x - curr->radius > qt->subtrees[i]->x &&
+                        curr->position.x + curr->radius < qt->subtrees[i]->x + qt->subtrees[i]->width &&
+                        curr->position.y - curr->radius > qt->subtrees[i]->y &&
+                        curr->position.y + curr->radius < qt->subtrees[i]->y + qt->subtrees[i]->height){
                         fit = YES;
                         DFQuadtreeInsertObject(qt->subtrees[i], obj);
                     }
@@ -101,10 +101,10 @@ void DFQuadtreeInsertObject(DFQuadtree *qt, DFGameObject* obj)
             } else {
                 BOOL fit = NO;
                 for (int i = 0; i < 4; i++){
-                    if (curr->x - curr->width/2 > qt->subtrees[i]->x &&
-                        curr->x + curr->width/2 < qt->subtrees[i]->x + qt->subtrees[i]->width &&
-                        curr->y - curr->height/2 > qt->subtrees[i]->y &&
-                        curr->y + curr->height/2 < qt->subtrees[i]->y + qt->subtrees[i]->height){
+                    if (curr->position.x - curr->width/2 > qt->subtrees[i]->x &&
+                        curr->position.x + curr->width/2 < qt->subtrees[i]->x + qt->subtrees[i]->width &&
+                        curr->position.y - curr->height/2 > qt->subtrees[i]->y &&
+                        curr->position.y + curr->height/2 < qt->subtrees[i]->y + qt->subtrees[i]->height){
                         fit = YES;
                         DFQuadtreeInsertObject(qt->subtrees[i], obj);
                     }

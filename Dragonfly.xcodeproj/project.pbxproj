@@ -572,6 +572,7 @@
 				4A1E4A931842BEDA00FEE3A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4A1E4A941842BEDA00FEE3A7 /* Build configuration list for PBXNativeTarget "DragonflyTests" */ = {
 			isa = XCConfigurationList;
@@ -580,6 +581,7 @@
 				4A1E4A961842BEDA00FEE3A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4A1E4A9B1842C25B00FEE3A7 /* Build configuration list for PBXAggregateTarget "Framework" */ = {
 			isa = XCConfigurationList;
@@ -588,6 +590,7 @@
 				4A1E4A9D1842C25B00FEE3A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -24,6 +24,7 @@ typedef struct DFGameObject {
     GLKVector3              position;
     GLKVector3              velocity;
     GLfloat                 rotation;
+    GLfloat                 rotationalVelocity;
     GLfloat                 mass;
     GLfloat                 drag;
     GLfloat                 thrust;
@@ -31,7 +32,7 @@ typedef struct DFGameObject {
     GLuint                  maxspeed;
     void                    (* updateWithAttitude)(struct DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
     void                    (* updateWithTarget)(struct DFGameObject* obj, GLKVector2 target, GLfloat dT);
-    void                    (* update)(struct DFGameObject* obj, GLfloat dT);
+    void                    (* updateWithNothing)(struct DFGameObject* obj, GLfloat dT);
 }   DFGameObject;
 
 DFGameObject*       DFGameObjectMake();
@@ -41,5 +42,6 @@ void                DFGameObjectAddEllipse(DFGameObject* obj, DFEllipseData* ell
 void                DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable);
 void                DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
 void                DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector2 target, GLfloat dT);
-void                DFGameObjectUpdate(DFGameObject* obj, GLfloat dT);
+void                DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT);
+void                DFGameObjectUpdate(DFGameObject* obj, CMAttitude* attitude, GLKVector2 target, GLfloat dT);
 void                DFGameObjectFree(DFGameObject* obj);

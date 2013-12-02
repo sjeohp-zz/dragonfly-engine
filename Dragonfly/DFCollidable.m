@@ -13,23 +13,32 @@ DFPoint closestPoint;
 DFCollidableData*   DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfloat height)
 {
     DFCollidableData* collidable = (DFCollidableData*)malloc(sizeof(DFCollidableData));
-    collidable->x = x;
-    collidable->y = y;
+    collidable->position.x = x;
+    collidable->position.y = y;
     collidable->width = width;
     collidable->height = height;
     collidable->radius = -1;
+    collidable->physics = NO;
     return collidable;
 }
 
 DFCollidableData*   DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius)
 {
     DFCollidableData* collidable = (DFCollidableData*)malloc(sizeof(DFCollidableData));
-    collidable->x = x;
-    collidable->y = y;
+    collidable->position.x = x;
+    collidable->position.y = y;
     collidable->width = -1;
     collidable->height = -1;
     collidable->radius = radius;
+    collidable->physics = NO;
     return collidable;
+}
+
+void DFCollidableAddPhysics(DFCollidableData* collidable, GLfloat mass, GLfloat elasticity)
+{
+    collidable->physics = YES;
+    collidable->mass = mass;
+    collidable->elasticity = elasticity;
 }
 
 GLfloat sqrf(GLfloat x) { return x * x; }
@@ -51,11 +60,11 @@ GLfloat distanceFromLineToPoint(DFLine line, DFPoint p)
 GLuint DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableData* circ)
 {
     DFPoint p = {
-        circ->x,
-        circ->y
+        circ->position.x,
+        circ->position.y
     };
-    GLuint x = rect->x;
-    GLuint y = rect->y;
+    GLuint x = rect->position.x;
+    GLuint y = rect->position.y;
     GLuint w = rect->width/2;
     GLuint h = rect->height/2;
     DFLine lines[] = {
@@ -70,7 +79,9 @@ GLuint DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableDa
         d = distanceFromLineToPoint(lines[i], p);
         if (d < distance){
             distance = d;
-            rect->collisionPoint = closestPoint;
+            if (rect->physics){
+                rect->collisionPoint = closestPoint;
+            }
         }
     }
     return distance;
@@ -78,36 +89,36 @@ GLuint DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableDa
 
 BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B)
 {
-    return DISTANCE_BETWEEN(A->x, A->y, B->x, B->y) < A->radius + B->radius;
+    return DISTANCE_BETWEEN(A->position.x, A->position.y, B->position.x, B->position.y) < A->radius + B->radius;
 }
 
 BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ)
 {
-    return DISTANCE_BETWEEN(rect->x, rect->y, circ->x, circ->y) < DFCollidableDistanceFromRectToCirc(rect, circ);
+    return DISTANCE_BETWEEN(rect->position.x, rect->position.y, circ->position.x, circ->position.y) < DFCollidableDistanceFromRectToCirc(rect, circ);
 }
 
 BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B)
 {
     DFPoint cornersA[] = {
-        {A->x - A->width/2, A->y - A->height/2},
-        {A->x + A->width/2, A->y - A->height/2},
-        {A->x + A->width/2, A->y + A->height/2},
-        {A->x - A->width/2, A->y + A->height/2}
+        {A->position.x - A->width/2, A->position.y - A->height/2},
+        {A->position.x + A->width/2, A->position.y - A->height/2},
+        {A->position.x + A->width/2, A->position.y + A->height/2},
+        {A->position.x - A->width/2, A->position.y + A->height/2}
     };
     
     DFPoint cornersB[] = {
-        {B->x - B->width/2, B->y - B->height/2},
-        {B->x + B->width/2, B->y - B->height/2},
-        {B->x + B->width/2, B->y + B->height/2},
-        {B->x - B->width/2, B->y + B->height/2}
+        {B->position.x - B->width/2, B->position.y - B->height/2},
+        {B->position.x + B->width/2, B->position.y - B->height/2},
+        {B->position.x + B->width/2, B->position.y + B->height/2},
+        {B->position.x - B->width/2, B->position.y + B->height/2}
     };
 
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){
-            if (((cornersB[j].x < cornersA[i].x && cornersB[j].x > A->x) ||
-                 (cornersB[j].x > cornersA[i].x && cornersB[j].x < A->x)) &&
-                ((cornersB[j].y < cornersA[i].y && cornersB[j].y > A->y) ||
-                 (cornersB[j].y > cornersA[i].y && cornersB[j].y < A->y))) {
+            if (((cornersB[j].x < cornersA[i].x && cornersB[j].x > A->position.x) ||
+                 (cornersB[j].x > cornersA[i].x && cornersB[j].x < A->position.x)) &&
+                ((cornersB[j].y < cornersA[i].y && cornersB[j].y > A->position.y) ||
+                 (cornersB[j].y > cornersA[i].y && cornersB[j].y < A->position.y))) {
                     return YES;
                 }
         }
@@ -115,9 +126,56 @@ BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollida
     return NO;
 }
 
+void DFCollidablePhysics(DFCollidableData* objectA, DFCollidableData* objectB)
+{
+    if (objectA->radius != -1){
+        if (objectB->radius != -1){
+            GLKVector3 difference = GLKVector3Subtract(objectB->position, objectA->position);
+            
+            GLKVector3 Vi1 = GLKVector3Project(objectA->velocity, difference);
+            GLKVector3 Vi2 = GLKVector3Project(objectB->velocity, difference);
+            
+            GLfloat M1 = objectA->mass;
+            GLfloat M2 = objectB->mass;
+            
+            GLfloat mcalc1 = (M1 - M2)/(M1 + M2);
+            GLKVector3 Vi1mult = GLKVector3MultiplyScalar(Vi1, mcalc1);
+            GLfloat mcalc2 = (2 * M2)/(M1 + M2);
+            GLKVector3 Vi2mult = GLKVector3MultiplyScalar(Vi2, mcalc2);
+            GLKVector3 Vf1 = GLKVector3Add(Vi1mult, Vi2mult);
+            GLKVector3 dV = GLKVector3Subtract(Vf1, Vi1);
+            
+            GLfloat e1 = objectA->elasticity;
+            GLfloat e2 = objectB->elasticity;
+            GLfloat calc = e1 * e2;
+            GLKVector3 cV = GLKVector3MultiplyScalar(dV, calc);
+            
+            GLKVector3 currcV = objectA->velocity;
+            GLKVector3 newcV = GLKVector3Add(currcV, cV);
+            
+            objectA->velocity = newcV;
+            
+            objectA->didCollide = YES;
+        } else {
+            
+            //circle vs rectangle
+        }
+    } else {
+        if (objectB->radius != -1){
+            
+            //rectangle vs circle
+        } else {
+            
+            //rectangle vs rectangle
+        }
+    }
+}
+
 void DFCollidableCollisionBetween(DFCollidableData* objA, DFCollidableData* objB)
 {
-    
+    if (objA->physics && objB->physics){
+        DFCollidablePhysics(objA, objB);
+    }
 }
 
 void DFCollidableFree(DFCollidableData* data)

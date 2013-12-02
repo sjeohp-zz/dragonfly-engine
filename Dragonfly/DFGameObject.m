@@ -17,7 +17,7 @@ DFGameObject* DFGameObjectMake()
     obj->collidableData = NULL;
     obj->updateWithAttitude = NULL;
     obj->updateWithTarget = NULL;
-    obj->update = NULL;
+    obj->updateWithNothing = NULL;
     obj->position = GLKVector3Make(0, 0, 0);
     obj->velocity = GLKVector3Make(0, 0, 0);
     obj->rotation = 0;
@@ -81,7 +81,19 @@ void DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable)
     }
 }
 
-void DFGameObjectUpdateData(DFGameObject* obj)
+void DFGameObjectUpdateCollisionData(DFGameObject* obj, GLfloat dT)
+{
+    if (obj == NULL || obj->collidableData == NULL || !obj->collidableData->didCollide){
+        return;
+    }
+    GLKVector3 rewind = GLKVector3MultiplyScalar(GLKVector3Negate(obj->velocity), dT);
+    obj->position = GLKVector3Add(obj->position, rewind);
+    obj->velocity = GLKVector3Add(obj->velocity, obj->collidableData->velocity);
+    obj->collidableData->velocity = GLKVector3Make(0, 0, 0);
+    obj->collidableData->didCollide = NO;
+}
+
+void DFGameObjectUpdateRenderData(DFGameObject* obj)
 {
     if (obj == NULL){
         return;
@@ -108,32 +120,35 @@ void DFGameObjectUpdateData(DFGameObject* obj)
 
 void DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLfloat dT)
 {
-    if (obj->updateWithAttitude == NULL){
-        printf("obj->updateWithAttitude == NULL");
+    if (obj == NULL || obj->updateWithAttitude == NULL){
+        printf("DFGameObjectUpdateWithAttitude error.");
         return;
     }
+    DFGameObjectUpdateCollisionData(obj, dT);
+    DFGameObjectUpdateRenderData(obj);
     obj->updateWithAttitude(obj, attitude, dT);
-    DFGameObjectUpdateData(obj);
 }
 
 void DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector2 target, GLfloat dT)
 {
-    if (obj->updateWithTarget == NULL){
-        printf("obj->updateWithTarget == NULL");
+    if (obj == NULL || obj->updateWithTarget == NULL){
+        printf("DFGameObjectUpdateWithTarget error.");
         return;
     }
+    DFGameObjectUpdateCollisionData(obj, dT);
+    DFGameObjectUpdateRenderData(obj);
     obj->updateWithTarget(obj, target, dT);
-    DFGameObjectUpdateData(obj);
 }
 
-void DFGameObjectUpdate(DFGameObject* obj, GLfloat dT)
+void DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT)
 {
-    if (obj->update == NULL){
-        printf("obj->update == NULL");
+    if (obj == NULL || obj->updateWithNothing == NULL){
+        printf("DFGameObjectUpdateWithNothing error.");
         return;
     }
-    obj->update(obj, dT);
-    DFGameObjectUpdateData(obj);
+    DFGameObjectUpdateCollisionData(obj, dT);
+    DFGameObjectUpdateRenderData(obj);
+    obj->updateWithNothing(obj, dT);
 }
 
 void DFGameObjectFree(DFGameObject* obj)
@@ -152,15 +167,6 @@ void DFGameObjectFree(DFGameObject* obj)
     }
     if (obj->collidableData != NULL){
         DFCollidableFree(obj->collidableData);
-    }
-    if (obj->updateWithAttitude != NULL){
-        free(obj->updateWithAttitude);
-    }
-    if (obj->updateWithTarget != NULL){
-        free(obj->updateWithTarget);
-    }
-    if (obj->update != NULL){
-        free(obj->update);
     }
     free(obj);
 }
