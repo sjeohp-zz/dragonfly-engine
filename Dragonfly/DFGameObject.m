@@ -21,7 +21,7 @@ DFGameObject* DFGameObjectMake()
     obj->position = GLKVector3Make(0, 0, 0);
     obj->velocity = GLKVector3Make(0, 0, 0);
     obj->rotation = 0;
-    obj->mass = 0;
+    obj->mass = 1;
     obj->drag = 0;
     obj->thrust = 1;
     obj->elasticity = 1;

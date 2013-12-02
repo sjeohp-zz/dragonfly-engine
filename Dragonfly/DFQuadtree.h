@@ -21,12 +21,12 @@ typedef struct DFQuadtree
     struct DFLinkedList*    contents;
     BOOL                    leaf;
     GLushort                depth;
-    GLuint                  x;
-    GLuint                  y;
-    GLuint                  width;
-    GLuint                  height;
+    GLfloat                 x;
+    GLfloat                 y;
+    GLfloat                 width;
+    GLfloat                 height;
 }   DFQuadtree;
 
-struct DFQuadtree*      DFQuadtreeMakeRoot(GLuint x, GLuint y, GLuint width, GLuint height, GLshort depth);
+struct DFQuadtree*      DFQuadtreeMakeRoot(GLfloat x, GLfloat y, GLfloat width, GLfloat height, GLshort depth);
 struct DFQuadtree*      DFQuadtreeMakeWithParent(DFQuadtree* parent, short index, GLshort depth);
 void                    DFQuadtreeInsertObject(DFQuadtree* qt, DFGameObject* obj);

@@ -17,6 +17,7 @@ typedef struct DFCollidableData {
     GLfloat                     radius;
     GLfloat                     width;
     GLfloat                     height;
+    DFPoint                     collisionPoint;
     struct DFCollidableData*    next;
 }   DFCollidableData;
 

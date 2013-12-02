@@ -8,6 +8,8 @@
 
 #import "DFCollidable.h"
 
+DFPoint closestPoint;
+
 DFCollidableData*   DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfloat height)
 {
     DFCollidableData* collidable = (DFCollidableData*)malloc(sizeof(DFCollidableData));
@@ -28,6 +30,50 @@ DFCollidableData*   DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius)
     collidable->height = -1;
     collidable->radius = radius;
     return collidable;
+}
+
+GLfloat sqrf(GLfloat x) { return x * x; }
+
+GLfloat dist_sqrdf(DFPoint v, DFPoint w) { return sqrf(v.x - w.x) + sqrf(v.y - w.y); }
+
+GLfloat distanceFromLineToPoint(DFLine line, DFPoint p)
+{
+    GLfloat length_squared = dist_sqrdf(line.A, line.B);
+    if (length_squared == 0) return dist_sqrdf(line.A, p);
+    GLfloat t = ((p.x - line.A.x) * (line.B.x - line.A.x) + (p.y - line.A.y) * (line.B.y - line.A.y)) / length_squared;
+    if (t < 0) return dist_sqrdf(line.A, p);
+    if (t > 1) return dist_sqrdf(line.B, p);
+    closestPoint.x = line.A.x + t * (line.B.x - line.A.x);
+    closestPoint.y = line.A.y + t * (line.B.y - line.A.y);
+    return sqrtf(dist_sqrdf(closestPoint, p));
+}
+
+GLuint DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableData* circ)
+{
+    DFPoint p = {
+        circ->x,
+        circ->y
+    };
+    GLuint x = rect->x;
+    GLuint y = rect->y;
+    GLuint w = rect->width/2;
+    GLuint h = rect->height/2;
+    DFLine lines[] = {
+        {x - w, y - h},
+        {x + w, y - h},
+        {x + w, y + h},
+        {x - w, y + h}
+    };
+    GLuint distance = -1;
+    GLuint d;
+    for (int i = 0; i < 4; i++){
+        d = distanceFromLineToPoint(lines[i], p);
+        if (d < distance){
+            distance = d;
+            rect->collisionPoint = closestPoint;
+        }
+    }
+    return distance;
 }
 
 BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B)
@@ -55,16 +101,13 @@ BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollida
         {B->x + B->width/2, B->y + B->height/2},
         {B->x - B->width/2, B->y + B->height/2}
     };
-    
-    DFPoint curr;
-    
+
     for (int i = 0; i < 4; i++){
-        curr = cornersA[i];
-        for (int i = 0; i < 2; i++){
-            if (((cornersB[i].x < curr.x && cornersB[(i + 2) % 4].x > curr.x) ||
-                 (cornersB[i].x < curr.x && cornersB[(i + 2) % 4].x > curr.x)) &&
-                ((cornersB[i].y < curr.y && cornersB[(i + 2) % 4].y > curr.y) ||
-                 (cornersB[i].y > curr.y && cornersB[(i + 2) % 4].y < curr.y))) {
+        for (int j = 0; j < 4; j++){
+            if (((cornersB[j].x < cornersA[i].x && cornersB[j].x > A->x) ||
+                 (cornersB[j].x > cornersA[i].x && cornersB[j].x < A->x)) &&
+                ((cornersB[j].y < cornersA[i].y && cornersB[j].y > A->y) ||
+                 (cornersB[j].y > cornersA[i].y && cornersB[j].y < A->y))) {
                     return YES;
                 }
         }
