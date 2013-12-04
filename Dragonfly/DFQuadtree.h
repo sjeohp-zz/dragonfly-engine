@@ -27,6 +27,8 @@ typedef struct DFQuadtree
     GLfloat                 height;
 }   DFQuadtree;
 
-struct DFQuadtree*      DFQuadtreeMakeRoot(GLfloat x, GLfloat y, GLfloat width, GLfloat height, GLshort depth);
-struct DFQuadtree*      DFQuadtreeMakeWithParent(DFQuadtree* parent, short index, GLshort depth);
-void                    DFQuadtreeInsertObject(DFQuadtree* qt, DFGameObject* obj);
+DFQuadtree*             DFQuadtreeMake(GLfloat x, GLfloat y, GLfloat width, GLfloat height, GLshort depth);
+DFQuadtree*             DFQuadtreeMakeWithParent(DFQuadtree* parent, short index, GLshort depth);
+
+void                    DFQuadtreeInsertCollidable(DFQuadtree* qt, DFCollidableData* collidable);
+DFLinkedList*           DFQuadtreeCheckCollisions(DFQuadtree *qt);

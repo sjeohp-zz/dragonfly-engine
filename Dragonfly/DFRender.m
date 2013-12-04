@@ -34,10 +34,11 @@ void DFRenderRectangle(DFRectangleData* rect, GLKBaseEffect* baseEffect)
     baseEffect.useConstantColor = NO;
     baseEffect.texture2d0.enabled = NO;
     
-    GLKMatrix4 translation = GLKMatrix4MakeTranslation(rect->position.x, rect->position.y, 0.0);
+    GLKMatrix4 translation = GLKMatrix4MakeTranslation(rect->translation.x, rect->translation.y, 0.0);
     GLKMatrix4 scale = GLKMatrix4MakeScale(rect->scale.x, rect->scale.y, rect->scale.z);
     GLKMatrix4 rotation = GLKMatrix4MakeRotation(rect->rotation, 0.0, 0.0, 1.0);
-    GLKMatrix4 modelMatrix = GLKMatrix4Multiply(translation, GLKMatrix4Multiply(scale, GLKMatrix4Multiply(rotation, GLKMatrix4Identity)));
+    GLKMatrix4 centre = GLKMatrix4MakeTranslation(-rect->centre.x, -rect->centre.y, -rect->centre.z);
+    GLKMatrix4 modelMatrix = GLKMatrix4Multiply(translation, GLKMatrix4Multiply(scale, GLKMatrix4Multiply(rotation, GLKMatrix4Multiply(centre, GLKMatrix4Identity))));
     baseEffect.transform.modelviewMatrix = modelMatrix;
     [baseEffect prepareToDraw];
     
@@ -55,7 +56,7 @@ void DFRenderEllipse(DFEllipseData* ellipse, GLKBaseEffect* baseEffect)
     baseEffect.useConstantColor = NO;
     baseEffect.texture2d0.enabled = NO;
     
-    GLKMatrix4 translation = GLKMatrix4MakeTranslation(ellipse->position.x, ellipse->position.y, 0.0);
+    GLKMatrix4 translation = GLKMatrix4MakeTranslation(ellipse->translation.x, ellipse->translation.y, 0.0);
     GLKMatrix4 scale = GLKMatrix4MakeScale(ellipse->scale.x, ellipse->scale.y, ellipse->scale.z);
     GLKMatrix4 rotation = GLKMatrix4MakeRotation(ellipse->rotation, 0.0, 0.0, 1.0);
     GLKMatrix4 modelMatrix = GLKMatrix4Multiply(translation, GLKMatrix4Multiply(rotation, GLKMatrix4Multiply(scale, GLKMatrix4Identity)));
@@ -81,7 +82,7 @@ void DFRenderTexture(DFTextureData* texture, GLKBaseEffect* baseEffect)
     GLKMatrix4 centre = GLKMatrix4MakeTranslation(-texture->centre.x, -texture->centre.y, -texture->centre.z);
     GLKMatrix4 scale = GLKMatrix4MakeScale(texture->scale.x, texture->scale.y, texture->scale.z);
     GLKMatrix4 rotation = GLKMatrix4MakeRotation(texture->rotation, 0.0, 0.0, 1.0);
-    GLKMatrix4 translation = GLKMatrix4MakeTranslation(texture->position.x, texture->position.y, texture->position.z);
+    GLKMatrix4 translation = GLKMatrix4MakeTranslation(texture->translation.x, texture->translation.y, texture->translation.z);
     GLKMatrix4 modelMatrix = GLKMatrix4Multiply(translation, GLKMatrix4Multiply(rotation, GLKMatrix4Multiply(scale, GLKMatrix4Multiply(centre, GLKMatrix4Identity))));
     baseEffect.transform.modelviewMatrix = modelMatrix;
     [baseEffect prepareToDraw];

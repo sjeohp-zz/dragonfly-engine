@@ -13,14 +13,14 @@ DFRectangleData* DFRectangleMake(GLfloat x, GLfloat y, GLfloat width, GLfloat he
 {
     DFRectangleData *rect = (DFRectangleData *)malloc(sizeof(DFRectangleData));
     
-    rect->vertices[0].position[0] = -width/2;
-    rect->vertices[0].position[1] = -height/2;
-    rect->vertices[1].position[0] = width/2;
-    rect->vertices[1].position[1] = -height/2;
-    rect->vertices[2].position[0] = width/2;
-    rect->vertices[2].position[1] = height/2;
-    rect->vertices[3].position[0] = -width/2;
-    rect->vertices[3].position[1] = height/2;
+    rect->vertices[0].position[0] = 0;
+    rect->vertices[0].position[1] = 0;
+    rect->vertices[1].position[0] = width;
+    rect->vertices[1].position[1] = 0;
+    rect->vertices[2].position[0] = width;
+    rect->vertices[2].position[1] = height;
+    rect->vertices[3].position[0] = 0;
+    rect->vertices[3].position[1] = height;
     
     rect->vertices[0].colour[0] = 0;
     rect->vertices[0].colour[1] = 0;
@@ -60,9 +60,10 @@ DFRectangleData* DFRectangleMake(GLfloat x, GLfloat y, GLfloat width, GLfloat he
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
-    rect->position = GLKVector3Make(x, y, 0);
+    rect->translation = GLKVector3Make(x, y, 0);
+    rect->centre = GLKVector3Make(width/2, height/2, 0);
     rect->scale = GLKVector3Make(1, 1, 1);
-    rect->rotation = 0.0;
+    rect->rotation = 0;
     
     rect->next = NULL;
     

@@ -15,33 +15,43 @@
 #import "DFEllipse.h"
 #import "DFCollidable.h"
 #import "DFUtil.h"
+#import "DFQuadtree.h"
 
 typedef struct DFGameObject {
     DFTextureData*          textureData;
     DFRectangleData*        rectangleData;
     DFEllipseData*          ellipseData;
     DFCollidableData*       collidableData;
-    GLKVector3              position;
-    GLKVector3              velocity;
+    
+    void                    (* updateWithAttitude)(struct DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
+    void                    (* updateWithTarget)(struct DFGameObject* obj, GLKVector3 targetVector, GLfloat dT);
+    void                    (* updateWithNothing)(struct DFGameObject* obj, GLfloat dT);
+    
+    GLKVector3              translation;
+    GLKVector3              translationalVelocity;
+    GLKVector3              translationalAcceleration;
+    
     GLfloat                 rotation;
     GLfloat                 rotationalVelocity;
+    GLfloat                 rotationalAcceleration;
+    
     GLfloat                 mass;
     GLfloat                 drag;
     GLfloat                 thrust;
     GLfloat                 elasticity;
-    GLuint                  maxspeed;
-    void                    (* updateWithAttitude)(struct DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
-    void                    (* updateWithTarget)(struct DFGameObject* obj, GLKVector2 target, GLfloat dT);
-    void                    (* updateWithNothing)(struct DFGameObject* obj, GLfloat dT);
+    GLuint                  maxSpeed;
 }   DFGameObject;
 
+
 DFGameObject*       DFGameObjectMake();
+
 void                DFGameObjectAddTexture(DFGameObject* obj, DFTextureData* texture);
 void                DFGameObjectAddRectangle(DFGameObject* obj, DFRectangleData* rect);
 void                DFGameObjectAddEllipse(DFGameObject* obj, DFEllipseData* ellipse);
 void                DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable);
+
 void                DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
-void                DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector2 target, GLfloat dT);
+void                DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector3 targetVector, GLfloat dT);
 void                DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT);
-void                DFGameObjectUpdate(DFGameObject* obj, CMAttitude* attitude, GLKVector2 target, GLfloat dT);
+
 void                DFGameObjectFree(DFGameObject* obj);

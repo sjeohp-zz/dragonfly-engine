@@ -16,7 +16,7 @@ DFLinkedList* DFLinkedListMake(void *data)
     return ptr;
 }
 
-DFLinkedList* listAppendItem(DFLinkedList* list, void* data)
+DFLinkedList* DFLinkedListAppendItem(DFLinkedList* list, void* data)
 {
     if (NULL == list || NULL == list->data){
         return DFLinkedListMake(data);
@@ -33,7 +33,7 @@ DFLinkedList* listAppendItem(DFLinkedList* list, void* data)
     return first;
 }
 
-DFLinkedList* listAppendList(DFLinkedList* list, DFLinkedList* listToAppend)
+DFLinkedList* DFLinkedListAppendList(DFLinkedList* list, DFLinkedList* listToAppend)
 {
     if (list == NULL || NULL == list->data){
         return listToAppend;

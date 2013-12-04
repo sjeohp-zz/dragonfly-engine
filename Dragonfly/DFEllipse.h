@@ -17,7 +17,7 @@ typedef struct DFEllipseData {
     ColouredVertex          vertices[ELLIPSE_RESOLUTION];
     GLuint                  arrayObject;
     GLuint                  vertexBuffer;
-    GLKVector3              position;
+    GLKVector3              translation;
     GLKVector3              scale;
     GLfloat                 rotation;
     struct DFEllipseData*   next;

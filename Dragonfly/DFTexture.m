@@ -55,7 +55,7 @@ DFTextureData* DFTextureLoad(NSString *fileName)
     glBindVertexArrayOES(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    texture->position = GLKVector3Make(0, 0, 0);
+    texture->translation = GLKVector3Make(0, 0, 0);
     texture->centre = GLKVector3Make(texture->width/2, texture->height/2, 0);
     texture->scale = GLKVector3Make(1, 1, 1);
     texture->colour = GLKVector4Make(1, 1, 1, 1);

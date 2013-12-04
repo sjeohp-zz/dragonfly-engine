@@ -8,6 +8,6 @@ Implements an entity-component system.
 
 Very lightweight.
 
-Quite incomplete.
+Still needs a lot of work.
 
 Requires OpenGL ES and GLKit; I plan to eventually remove the dependency on GLKit.

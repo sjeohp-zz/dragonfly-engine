@@ -19,8 +19,8 @@ typedef struct DFPoint {
 }   DFPoint;
 
 typedef struct DFLine {
-    DFPoint A;
-    DFPoint B;
+    GLKVector3 A;
+    GLKVector3 B;
 }   DFLine;
 
 typedef struct ColouredVertex {
@@ -44,3 +44,5 @@ typedef struct DFVector4 {
 DFVector3   DFVector3Make(GLfloat x, GLfloat y, GLfloat z);
 DFVector4   DFVector4Make(GLfloat x, GLfloat y, GLfloat z, GLfloat a);
 //GLfloat     DFDistanceFromLineToPoint(DFLine line, DFPoint p);
+
+GLKVector3 DFGeometryNormal(GLKVector3 vertexA, GLKVector3 vertexB);

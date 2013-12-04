@@ -8,9 +8,9 @@
 
 #import "DFQuadtree.h"
 
-struct DFQuadtree * DFQuadtreeMake(GLuint x, GLuint y, GLuint width, GLuint height, GLshort depth)
+DFQuadtree* DFQuadtreeMake(GLfloat x, GLfloat y, GLfloat width, GLfloat height, GLshort depth)
 {
-    if (depth == 0){
+    if (depth <= 0){
         return NULL;
     }
     DFQuadtree *ptr = (DFQuadtree *)malloc(sizeof(DFQuadtree));
@@ -33,9 +33,9 @@ struct DFQuadtree * DFQuadtreeMake(GLuint x, GLuint y, GLuint width, GLuint heig
     return ptr;
 }
 
-struct DFQuadtree* DFQuadtreeMakeWithParent(DFQuadtree *parent, short index, GLshort depth)
+DFQuadtree* DFQuadtreeMakeWithParent(DFQuadtree *parent, short index, GLshort depth)
 {
-    if (depth == 0){
+    if (depth <= 0){
         return NULL;
     }
     DFQuadtree *ptr = (DFQuadtree *)malloc(sizeof(DFQuadtree));
@@ -44,17 +44,17 @@ struct DFQuadtree* DFQuadtreeMakeWithParent(DFQuadtree *parent, short index, GLs
     ptr->width = parent->width/2.0;
     ptr->height = parent->height/2.0;
     if (index == 0){
-        ptr->x = parent->x;
-        ptr->y = parent->y;
+        ptr->x = parent->x ;//- ptr->width/2.0;
+        ptr->y = parent->y ;//- ptr->height/2.0;
     } else if (index == 1){
         ptr->x = parent->x + parent->width/2.0;
-        ptr->y = parent->y;
+        ptr->y = parent->y ;//- ptr->height/2.0;
     } else if (index == 2){
         ptr->x = parent->x + parent->width/2.0;
         ptr->y = parent->y + parent->height/2.0;
     } else if (index == 3){
-        ptr->x = parent->x;
-        ptr->y = parent->y + parent->height/2.0;
+        ptr->x = parent->x ;//- ptr->width/2.0;
+        ptr->y = parent->y + ptr->height/2.0;
     }
     ptr->subtrees[0] = DFQuadtreeMakeWithParent(ptr, 0, depth - 1);
     ptr->subtrees[1] = DFQuadtreeMakeWithParent(ptr, 1, depth - 1);
@@ -69,49 +69,46 @@ struct DFQuadtree* DFQuadtreeMakeWithParent(DFQuadtree *parent, short index, GLs
     return ptr;
 }
 
-void DFQuadtreeInsertObject(DFQuadtree *qt, DFGameObject* obj)
+void DFQuadtreeInsertCollidable(DFQuadtree *qt, DFCollidableData* collidable)
 {
-    DFCollidableData* curr = obj->collidableData;
-    while (curr != NULL){
-        if (curr->radius != -1){
-            if (qt->leaf ||
-                curr->radius >= qt->width/2 ||
-                curr->radius >= qt->height/2){
-                qt->contents = DFLinkedListAppendItem(qt->contents, obj);
-            } else {
-                BOOL fit = NO;
-                for (int i = 0; i < 4; i++){
-                    if (curr->position.x - curr->radius > qt->subtrees[i]->x &&
-                        curr->position.x + curr->radius < qt->subtrees[i]->x + qt->subtrees[i]->width &&
-                        curr->position.y - curr->radius > qt->subtrees[i]->y &&
-                        curr->position.y + curr->radius < qt->subtrees[i]->y + qt->subtrees[i]->height){
-                        fit = YES;
-                        DFQuadtreeInsertObject(qt->subtrees[i], obj);
-                    }
-                }
-                if (!fit){
-                    qt->contents = DFLinkedListAppendItem(qt->contents, obj);
+    if (collidable->radius != -1){
+        if (qt->leaf ||
+            collidable->radius >= qt->width/2 ||
+            collidable->radius >= qt->height/2){
+            qt->contents = DFLinkedListAppendItem(qt->contents, collidable);
+        } else {
+            BOOL fit = NO;
+            for (int i = 0; i < 4; i++){
+                if (collidable->translation.x - collidable->radius > qt->subtrees[i]->x &&
+                    collidable->translation.x + collidable->radius < qt->subtrees[i]->x + qt->subtrees[i]->width &&
+                    collidable->translation.y - collidable->radius > qt->subtrees[i]->y &&
+                    collidable->translation.y + collidable->radius < qt->subtrees[i]->y + qt->subtrees[i]->height){
+                    fit = YES;
+                    DFQuadtreeInsertCollidable(qt->subtrees[i], collidable);
                 }
             }
+            if (!fit){
+                qt->contents = DFLinkedListAppendItem(qt->contents, collidable);
+            }
+        }
+    } else {
+        if (qt->leaf ||
+            collidable->width >= qt->width/2 ||
+            collidable->height >= qt->height/2){
+            qt->contents = DFLinkedListAppendItem(qt->contents, collidable);
         } else {
-            if (qt->leaf ||
-                curr->width >= qt->width/2 ||
-                curr->height >= qt->height/2){
-                qt->contents = DFLinkedListAppendItem(qt->contents, obj);
-            } else {
-                BOOL fit = NO;
-                for (int i = 0; i < 4; i++){
-                    if (curr->position.x - curr->width/2 > qt->subtrees[i]->x &&
-                        curr->position.x + curr->width/2 < qt->subtrees[i]->x + qt->subtrees[i]->width &&
-                        curr->position.y - curr->height/2 > qt->subtrees[i]->y &&
-                        curr->position.y + curr->height/2 < qt->subtrees[i]->y + qt->subtrees[i]->height){
-                        fit = YES;
-                        DFQuadtreeInsertObject(qt->subtrees[i], obj);
-                    }
+            BOOL fit = NO;
+            for (int i = 0; i < 4; i++){
+                if (collidable->translation.x - collidable->width/2 > qt->subtrees[i]->x &&
+                    collidable->translation.x + collidable->width/2 < qt->subtrees[i]->x + qt->subtrees[i]->width &&
+                    collidable->translation.y - collidable->height/2 > qt->subtrees[i]->y &&
+                    collidable->translation.y + collidable->height/2 < qt->subtrees[i]->y + qt->subtrees[i]->height){
+                    fit = YES;
+                    DFQuadtreeInsertCollidable(qt->subtrees[i], collidable);
                 }
-                if (!fit){
-                    qt->contents = DFLinkedListAppendItem(qt->contents, obj);
-                }
+            }
+            if (!fit){
+                qt->contents = DFLinkedListAppendItem(qt->contents, collidable);
             }
         }
     }
@@ -130,6 +127,7 @@ DFLinkedList* DFQuadtreeCheckCollisions(DFQuadtree *qt)
     
     DFLinkedList* contentsCurr;
     DFLinkedList* subtreesCurr;
+    DFLinkedList* contentsOther;
     
     contentsCurr = qt->contents;
     
@@ -139,40 +137,62 @@ DFLinkedList* DFQuadtreeCheckCollisions(DFQuadtree *qt)
         
         while (subtreesCurr != NULL && subtreesCurr->data != NULL){
             
-            DFGameObject* objectA = contentsCurr->data;
-            DFGameObject* objectB = subtreesCurr->data;
+            DFCollidableData* currA = contentsCurr->data;
+            DFCollidableData* currB = subtreesCurr->data;
             
-            DFCollidableData* currA = objectA->collidableData;
-            
-            while (currA != NULL){
-                DFCollidableData* currB = objectB->collidableData;
-                while (currB != NULL){
-                    if (currA->radius != -1){
-                        if (currB->radius != -1){
-                            if (DFCollidableCheckCollisionBetweenCircAndCirc(currA, currB)){
-                                DFCollidableCollisionBetween(currA, currB);
-                            }
-                        } else {
-                            if (DFCollidableCheckCollisionBetweenRectAndCirc(currB, currA)){
-                                DFCollidableCollisionBetween(currA, currB);
-                            }
-                        }
-                    } else {
-                        if (currB->radius != -1){
-                            if (DFCollidableCheckCollisionBetweenRectAndCirc(currA, currB)){
-                                DFCollidableCollisionBetween(currA, currB);
-                            }
-                        } else {
-                            if (DFCollidableCheckCollisionBetweenRectAndRect(currA, currB)){
-                                DFCollidableCollisionBetween(currA, currB);
-                            }
-                        }
+            if (currA->radius != -1){
+                if (currB->radius != -1){
+                    if (DFCollidableCheckCollisionBetweenCircAndCirc(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
                     }
-                    currB = currB->next;
+                } else {
+                    if (DFCollidableCheckCollisionBetweenRectAndCirc(currB, currA)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
                 }
-                currA = currA->next;
+            } else {
+                if (currB->radius != -1){
+                    if (DFCollidableCheckCollisionBetweenRectAndCirc(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                } else {
+                    if (DFCollidableCheckCollisionBetweenRectAndRect(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                }
             }
             subtreesCurr = subtreesCurr->next;
+        }
+        
+        contentsOther = contentsCurr->next;
+        
+        while (contentsOther != NULL && contentsOther->data != NULL){
+            
+            DFCollidableData* currA = contentsCurr->data;
+            DFCollidableData* currB = contentsOther->data;
+                
+            if (currA->radius != -1){
+                if (currB->radius != -1){
+                    if (DFCollidableCheckCollisionBetweenCircAndCirc(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                } else {
+                    if (DFCollidableCheckCollisionBetweenRectAndCirc(currB, currA)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                }
+            } else {
+                if (currB->radius != -1){
+                    if (DFCollidableCheckCollisionBetweenRectAndCirc(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                } else {
+                    if (DFCollidableCheckCollisionBetweenRectAndRect(currA, currB)){
+                        DFCollidableCollisionBetween(currA, currB);
+                    }
+                }
+            }
+            contentsOther = contentsOther->next;
         }
         contentsCurr = contentsCurr->next;
     }

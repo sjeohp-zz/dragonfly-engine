@@ -12,25 +12,32 @@
 #import "DFUtil.h"
 
 typedef struct DFCollidableData {
-    GLKVector3                  position;
-    GLKVector3                  velocity;
+    GLKVector3                  translation;
+    GLKVector3                  translationalVelocity;
+    GLKVector3                  translationalAcceleration;
+    
     GLfloat                     rotation;
     GLfloat                     rotationalVelocity;
+    GLfloat                     rotationalAcceleration;
+    
     GLfloat                     radius;
     GLfloat                     width;
     GLfloat                     height;
+    
+    GLKVector3*                 vertices;
+    GLKVector3*                 normals;
+    GLushort                    numberOfVertices;
+    
+    GLfloat                     density;
+    GLfloat                     volume;
+    
     BOOL                        didCollide;
-    BOOL                        physics;
-    DFPoint                     collisionPoint;
-    GLfloat                     mass;
-    GLfloat                     elasticity;
-    struct DFCollidableData*    next;
+    
 }   DFCollidableData;
 
 DFCollidableData*   DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 DFCollidableData*   DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius);
 void                DFCollidableAddPhysics(DFCollidableData* collidable, GLfloat mass, GLfloat elasticity);
-GLuint              DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableData* circ);
 BOOL                DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B);
 BOOL                DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ);
 BOOL                DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B);

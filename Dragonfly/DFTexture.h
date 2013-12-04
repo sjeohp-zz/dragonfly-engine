@@ -23,7 +23,7 @@ typedef struct DFTextureData {
     GLuint                  width;
     GLuint                  height;
     GLuint                  name;
-    GLKVector3              position;
+    GLKVector3              translation;
     GLKVector3              centre;
     GLKVector3              scale;
     GLKVector4              colour;

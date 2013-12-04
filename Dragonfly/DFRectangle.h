@@ -21,7 +21,8 @@ typedef struct DFRectangleData {
     GLuint                  vertexBuffer;
     GLuint                  indexBuffer;
     GLuint                  arrayObject;
-    GLKVector3              position;
+    GLKVector3              translation;
+    GLKVector3              centre;
     GLKVector3              scale;
     GLfloat                 rotation;
     struct DFRectangleData* next;

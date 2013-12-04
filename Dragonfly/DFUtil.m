@@ -21,3 +21,11 @@ DFVector4   DFVector4Make(GLfloat x, GLfloat y, GLfloat z, GLfloat a)
     DFVector4 vector = {x, y, z, a};
     return vector;
 }
+
+GLKVector3 DFGeometryNormal(GLKVector3 vertexA, GLKVector3 vertexB)
+{
+    GLKVector3 n = GLKVector3Make((vertexB.y - vertexA.y),
+                                  -(vertexB.x - vertexA.x),
+                                  0);
+    return n;
+}

@@ -36,7 +36,7 @@ DFEllipseData* DFEllipseMake(GLfloat x, GLfloat y, GLfloat radius)
     glBindVertexArrayOES(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    ellipse->position = GLKVector3Make(x, y, 0);
+    ellipse->translation = GLKVector3Make(x, y, 0);
     ellipse->scale = GLKVector3Make(1, 1, 1);
     ellipse->rotation = 0.0;
     ellipse->next = NULL;
