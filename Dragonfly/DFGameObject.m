@@ -23,17 +23,21 @@ DFGameObject* DFGameObjectMake()
     
     obj->translation = GLKVector3Make(0, 0, 0);
     obj->translationalVelocity = GLKVector3Make(0, 0, 0);
-    obj->translationalAcceleration = GLKVector3Make(0, 0, 0);
+    obj->translationalForce = GLKVector3Make(0, 0, 0);
     
     obj->rotation = 0;
     obj->rotationalVelocity = 0;
-    obj->rotationalAcceleration = 0;
+    obj->rotationalForce = 0;
     
-    obj->mass = 1;
-    obj->drag = 0;
-    obj->thrust = 1;
+    obj->translationalInertia = 1;
+    obj->translationalDrag = 1;
+    obj->rotationalInertia = 1;
+    obj->rotationalDrag = 1;
+    
     obj->elasticity = 1;
-    obj->maxSpeed = -1;
+    
+    obj->translationalMaxspeed = FLT_MAX;
+    obj->rotationalMaxspeed = FLT_MAX;
     
     return obj;
 }
@@ -136,53 +140,25 @@ void DFGameObjectUpdateRenderData(DFGameObject* obj)
     }
 }
 
-void DFCollidableTransformVertices(DFCollidableData* collidable)
-{
-    if (collidable->radius != -1){
-        return;
-    }
-    
-    GLfloat r = GLKMathDegreesToRadians(collidable->rotation);
-    GLfloat sinr = sinf(r);
-    GLfloat cosr = cosf(r);
-    GLfloat x = collidable->translation.x;
-    GLfloat y = collidable->translation.y;
-    GLfloat w = collidable->width/2;
-    GLfloat h = collidable->height/2;
-    
-    
-    collidable->vertices[0] = GLKVector3Add(GLKVector3Make(cosr * (-w) - sinr * (-h), sinr * (-w) + cosr * (-h), 0),
-                                            collidable->translation);
-    collidable->vertices[1] = GLKVector3Add(GLKVector3Make(cosr * (w) - sinr * (h), sinr * (-w) + cosr * (-h), 0),
-                                            collidable->translation);
-    collidable->vertices[2] = GLKVector3Add(GLKVector3Make(cosr * (w) - sinr * (h), sinr * (w) + cosr * (h), 0),
-                                            collidable->translation);
-    collidable->vertices[3] = GLKVector3Add(GLKVector3Make(cosr * (-w) - sinr * (-h), sinr * (w) + cosr * (h), 0),
-                                            collidable->translation);
-     
-    /*
-    collidable->vertices[0] = GLKVector3Make(x - w, y - h, 0);
-    collidable->vertices[1] = GLKVector3Make(x + w, y - h, 0);
-    collidable->vertices[2] = GLKVector3Make(x + w, y + h, 0);
-    collidable->vertices[3] = GLKVector3Make(x - w, y + h, 0);
-    */
-    collidable->normals[0] = DFGeometryNormal(collidable->vertices[0], collidable->vertices[1]);
-    collidable->normals[1] = DFGeometryNormal(collidable->vertices[1], collidable->vertices[2]);
-    collidable->normals[2] = DFGeometryNormal(collidable->vertices[2], collidable->vertices[3]);
-    collidable->normals[3] = DFGeometryNormal(collidable->vertices[3], collidable->vertices[0]);
-}
-
 void DFGameObjectTransform(DFGameObject* obj, GLfloat dT)
 {
-    /*
-    obj->translationalVelocity = GLKVector3Add(obj->translationalVelocity, obj->translationalAcceleration);
-    obj->translationalAcceleration = GLKVector3Make(0, 0, 0);
-    obj->translation = GLKVector3Add(obj->translation, GLKVector3MultiplyScalar(obj->translationalVelocity, dT));
+    GLKVector3 newTV = GLKVector3Add(GLKVector3MultiplyScalar(obj->translationalVelocity, 1 - obj->translationalDrag),
+                                           GLKVector3MultiplyScalar(obj->translationalForce, 1 / obj->translationalInertia));
+    if (GLKVector3Length(newTV) > obj->translationalMaxspeed){
+        newTV = GLKVector3MultiplyScalar(newTV, obj->translationalMaxspeed / GLKVector3Length(newTV));
+    }
+    obj->translationalVelocity = newTV;
+    GLKVector3 curMove = GLKVector3MultiplyScalar(obj->translationalVelocity, dT);
+    obj->translation = GLKVector3Add(obj->translation, curMove);
+    obj->translationalForce = GLKVector3Make(0, 0, 0);
     
-    obj->rotationalVelocity += obj->rotationalAcceleration;
-    obj->rotationalAcceleration = 0;
-    obj->rotation += obj->rotationalVelocity;
-    */
+    GLfloat newRV = obj->rotationalVelocity * (1 - obj->rotationalDrag) + obj->rotationalForce / obj->rotationalInertia;
+    if (newRV > obj->rotationalMaxspeed) newRV = obj->rotationalMaxspeed;
+    if (newRV < -obj->rotationalMaxspeed) newRV = -obj->rotationalMaxspeed;
+    obj->rotationalVelocity = newRV;
+    obj->rotation += obj->rotationalVelocity * dT;
+    obj->rotationalForce = 0;
+    
     if (obj->collidableData != NULL){
         obj->collidableData->translation = obj->translation;
         obj->collidableData->translationalVelocity = obj->translationalVelocity;
@@ -213,6 +189,7 @@ void DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector3 targetVector, GL
     DFGameObjectReadCollisionData(obj, dT);
     DFGameObjectUpdateRenderData(obj);
     obj->updateWithTarget(obj, targetVector, dT);
+    DFGameObjectTransform(obj, dT);
 }
 
 void DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT)
@@ -224,6 +201,7 @@ void DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT)
     DFGameObjectReadCollisionData(obj, dT);
     DFGameObjectUpdateRenderData(obj);
     obj->updateWithNothing(obj, dT);
+    DFGameObjectTransform(obj, dT);
 }
 
 void DFGameObjectFree(DFGameObject* obj)

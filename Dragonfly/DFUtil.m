@@ -8,8 +8,6 @@
 
 #import "DFUtil.h"
 
-
-
 DFVector3   DFVector3Make(GLfloat x, GLfloat y, GLfloat z)
 {
     DFVector3 vector = {x, y, z};
@@ -29,3 +27,4 @@ GLKVector3 DFGeometryNormal(GLKVector3 vertexA, GLKVector3 vertexB)
                                   0);
     return n;
 }
+

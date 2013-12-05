@@ -10,6 +10,7 @@
 #import <GLKit/GLKit.h>
 
 #import "DFUtil.h"
+//#import "DFGameObject.h"
 
 typedef struct DFCollidableData {
     GLKVector3                  translation;
@@ -42,4 +43,5 @@ BOOL                DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableDat
 BOOL                DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ);
 BOOL                DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B);
 void                DFCollidableCollisionBetween(DFCollidableData* objA, DFCollidableData* objB);
+void                DFCollidableTransformVertices(DFCollidableData* collidable);
 void                DFCollidableFree(DFCollidableData* data);

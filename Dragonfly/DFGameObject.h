@@ -29,19 +29,22 @@ typedef struct DFGameObject {
     
     GLKVector3              translation;
     GLKVector3              translationalVelocity;
-    GLKVector3              translationalAcceleration;
+    GLKVector3              translationalForce;
+    
+    GLfloat                 translationalInertia;
+    GLfloat                 translationalDrag;
+    GLfloat                 translationalMaxspeed;
     
     GLfloat                 rotation;
     GLfloat                 rotationalVelocity;
-    GLfloat                 rotationalAcceleration;
+    GLfloat                 rotationalForce;
     
-    GLfloat                 mass;
-    GLfloat                 drag;
-    GLfloat                 thrust;
+    GLfloat                 rotationalInertia;
+    GLfloat                 rotationalDrag;
+    GLfloat                 rotationalMaxspeed;
+    
     GLfloat                 elasticity;
-    GLuint                  maxSpeed;
 }   DFGameObject;
-
 
 DFGameObject*       DFGameObjectMake();
 

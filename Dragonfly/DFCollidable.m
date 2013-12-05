@@ -69,14 +69,6 @@ void DFCollidableAddPhysics(DFCollidableData* collidable, GLfloat mass, GLfloat 
     
 }
 
-BOOL rectContainsPoint(DFCollidableData* rect, GLKVector3 point)
-{
-    for (int i = 0; i < rect->numberOfVertices; i++){
-        
-    }
-    return YES;
-}
-
 GLfloat sqrf(GLfloat x) { return x * x; }
 
 GLfloat dist_sqrdf(GLKVector3 v, GLKVector3 w) { return sqrf(v.x - w.x) + sqrf(v.y - w.y); }
@@ -125,22 +117,22 @@ int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
     return c;
 }
 
-BOOL rectVsCircle(DFCollidableData* rect, DFCollidableData* circ)
+BOOL DFGeometryPolygonContainsPoint(GLushort numVertices, GLKVector3* polygonVertices, GLKVector3 point)
 {
-    GLushort nvert = rect->numberOfVertices;
-    GLfloat vertx[nvert];
-    GLfloat verty[nvert];
-    for (int i = 0; i < nvert; i++){
-        vertx[i] = rect->vertices[i].x;
-        verty[i] = rect->vertices[i].y;
+    GLfloat vertx[numVertices];
+    GLfloat verty[numVertices];
+    for (int i = 0; i < numVertices; i++){
+        vertx[i] = polygonVertices[i].x;
+        verty[i] = polygonVertices[i].y;
     }
-    return pnpoly(nvert, vertx, verty, circ->translation.x, circ->translation.y);
+    return pnpoly(numVertices, vertx, verty, point.x, point.y);
 }
 
 GLKVector3 DFGeometrySupportPoint(DFCollidableData* collidable, GLKVector3 dir)
 {
     GLfloat bestProjection = -FLT_MAX;
     GLKVector3 bestVertex;
+    
     for (int i = 0; i < collidable->numberOfVertices; i++)
     {
         GLKVector3 v = collidable->vertices[i];
@@ -155,11 +147,10 @@ GLKVector3 DFGeometrySupportPoint(DFCollidableData* collidable, GLKVector3 dir)
     return bestVertex;
 }
 
-GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, DFCollidableData* A, DFCollidableData* B )
+GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, DFCollidableData* A, DFCollidableData* B)
 {
     GLfloat bestDistance = -FLT_MAX;
     GLushort bestIndex;
-    
     for (int i = 0; i < A->numberOfVertices; i++)
     {
         // Retrieve a face normal from A
@@ -182,7 +173,6 @@ GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, DFCollidableData* A, 
             bestIndex = i;
         }
     }
-
     *faceIndex = bestIndex;
     return bestDistance;
 }
@@ -195,13 +185,45 @@ BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollida
 BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ)
 {
     GLushort fI;
-    return rectVsCircle(rect, circ) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
+    return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
 }
 
 BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B)
 {
-    GLushort fI;
-    return DFGeometryPenetrationDistance(&fI, A, B) <= 0;
+    GLushort fI1;
+    GLushort fI2;
+    GLfloat d1 = DFGeometryPenetrationDistance(&fI1, A, B);
+    GLfloat d2 = DFGeometryPenetrationDistance(&fI2, B, A);
+    return !(d1 > 0 || d2 > 0);
+}
+
+void DFCollidableTransformVertices(DFCollidableData* collidable)
+{
+    if (collidable->radius != -1){
+        return;
+    }
+    
+    GLfloat r = collidable->rotation;
+    GLfloat sinr = sinf(r);
+    GLfloat cosr = cosf(r);
+    GLfloat x = collidable->translation.x;
+    GLfloat y = collidable->translation.y;
+    GLfloat w = collidable->width/2.0;
+    GLfloat h = collidable->height/2.0;
+    
+    collidable->vertices[0] = GLKVector3Make(cosr * (-w) -  sinr * (-h) + x,
+                                             sinr * (-w) +  cosr * (-h) + y, 0);
+    collidable->vertices[1] = GLKVector3Make(cosr * (w)  -  sinr * (-h) + x,
+                                             sinr * (w)  +  cosr * (-h) + y, 0);
+    collidable->vertices[2] = GLKVector3Make(cosr * (w)  -  sinr * (h) + x,
+                                             sinr * (w)  +  cosr * (h) + y, 0);
+    collidable->vertices[3] = GLKVector3Make(cosr * (-w) -  sinr * (h) + x,
+                                             sinr * (-w) +  cosr * (h) + y, 0);
+    
+    collidable->normals[0] = DFGeometryNormal(collidable->vertices[0], collidable->vertices[1]);
+    collidable->normals[1] = DFGeometryNormal(collidable->vertices[1], collidable->vertices[2]);
+    collidable->normals[2] = DFGeometryNormal(collidable->vertices[2], collidable->vertices[3]);
+    collidable->normals[3] = DFGeometryNormal(collidable->vertices[3], collidable->vertices[0]);
 }
 
 /*
