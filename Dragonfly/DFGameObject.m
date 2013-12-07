@@ -94,23 +94,24 @@ void DFGameObjectReadCollisionData(DFGameObject* obj, GLfloat dT)
     
     DFCollidableData* collision = obj->collidableData;
     
-    GLKVector3 revTranslation = GLKVector3MultiplyScalar(GLKVector3Negate(obj->translationalVelocity), dT);
+    /*
+    GLKVector3 revTranslation = GLKVector3MultiplyScalar(GLKVector3Negate(obj->translationalVelocity), dT*1.1);
     obj->translation = GLKVector3Add(obj->translation, revTranslation);
-            
-    obj->translationalVelocity = collision->translationalVelocity;
-    obj->translation = GLKVector3Add(obj->translation, GLKVector3MultiplyScalar(obj->translationalVelocity, dT));
+*/
+    //obj->translation = GLKVector3Add(obj->translation, GLKVector3MultiplyScalar(collision->translationalVelocity, dT));
+    obj->translationalVelocity = collision->translationalVelocity;// GLKVector3Add(obj->translationalVelocity, GLKVector3MultiplyScalar(collision->translationalForce, 1));
     
     collision->translation = obj->translation;
-    collision->translationalAcceleration = GLKVector3Make(0, 0, 0);
+    //collision->translationalVelocity = GLKVector3Make(0, 0, 0);
+    collision->translationalForce = GLKVector3Make(0, 0, 0);
     
     GLfloat revRotation = -obj->rotationalVelocity * dT;
     obj->rotation = obj->rotation + revRotation;
     
-    obj->rotationalVelocity = collision->rotationalVelocity;
     obj->rotation += obj->rotationalVelocity;
     
     collision->rotation = obj->rotation;
-    collision->rotationalAcceleration = 0;
+    collision->rotationalForce = 0;
     
     collision->didCollide = NO;
 }
@@ -160,10 +161,16 @@ void DFGameObjectTransform(DFGameObject* obj, GLfloat dT)
     obj->rotationalForce = 0;
     
     if (obj->collidableData != NULL){
+        
         obj->collidableData->translation = obj->translation;
         obj->collidableData->translationalVelocity = obj->translationalVelocity;
+        obj->collidableData->translationalForce = GLKVector3Make(0, 0, 0);
+        obj->collidableData->translationalInertia = obj->translationalInertia;
+        
         obj->collidableData->rotation = obj->rotation;
         obj->collidableData->rotationalVelocity = obj->rotationalVelocity;
+        obj->collidableData->rotationalInertia = obj->rotationalInertia;
+        
         DFCollidableTransformVertices(obj->collidableData);
     }
 }

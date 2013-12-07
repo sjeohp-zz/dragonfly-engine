@@ -13,13 +13,22 @@
 //#import "DFGameObject.h"
 
 typedef struct DFCollidableData {
-    GLKVector3                  translation;
-    GLKVector3                  translationalVelocity;
-    GLKVector3                  translationalAcceleration;
     
-    GLfloat                     rotation;
-    GLfloat                     rotationalVelocity;
-    GLfloat                     rotationalAcceleration;
+    GLKVector3              translation;
+    GLKVector3              translationalVelocity;
+    GLKVector3              translationalForce;
+    GLfloat                 translationalInertia;
+    GLfloat                 translationalDrag;
+    GLfloat                 translationalMaxspeed;
+    
+    GLfloat                 rotation;
+    GLfloat                 rotationalVelocity;
+    GLfloat                 rotationalForce;
+    GLfloat                 rotationalInertia;
+    GLfloat                 rotationalDrag;
+    GLfloat                 rotationalMaxspeed;
+    
+    GLfloat                 restitution;
     
     GLfloat                     radius;
     GLfloat                     width;
@@ -28,9 +37,6 @@ typedef struct DFCollidableData {
     GLKVector3*                 vertices;
     GLKVector3*                 normals;
     GLushort                    numberOfVertices;
-    
-    GLfloat                     density;
-    GLfloat                     volume;
     
     BOOL                        didCollide;
     

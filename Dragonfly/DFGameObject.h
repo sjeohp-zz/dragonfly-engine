@@ -30,7 +30,6 @@ typedef struct DFGameObject {
     GLKVector3              translation;
     GLKVector3              translationalVelocity;
     GLKVector3              translationalForce;
-    
     GLfloat                 translationalInertia;
     GLfloat                 translationalDrag;
     GLfloat                 translationalMaxspeed;
@@ -38,7 +37,6 @@ typedef struct DFGameObject {
     GLfloat                 rotation;
     GLfloat                 rotationalVelocity;
     GLfloat                 rotationalForce;
-    
     GLfloat                 rotationalInertia;
     GLfloat                 rotationalDrag;
     GLfloat                 rotationalMaxspeed;

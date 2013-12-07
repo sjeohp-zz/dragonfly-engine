@@ -15,11 +15,11 @@ DFCollidableData* DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfl
     DFCollidableData* collidable = (DFCollidableData*)malloc(sizeof(DFCollidableData));
     collidable->translation = GLKVector3Make(x, y, 0);
     collidable->translationalVelocity = GLKVector3Make(0, 0, 0);
-    collidable->translationalAcceleration = GLKVector3Make(0, 0, 0);
+    collidable->translationalForce = GLKVector3Make(0, 0, 0);
     
     collidable->rotation = 0;
     collidable->rotationalVelocity = 0;
-    collidable->rotationalAcceleration = 0;
+    collidable->rotationalForce = 0;
     
     collidable->radius = -1;
     collidable->width = width;
@@ -49,11 +49,11 @@ DFCollidableData* DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius)
     DFCollidableData* collidable = (DFCollidableData*)malloc(sizeof(DFCollidableData));
     collidable->translation = GLKVector3Make(x, y, 0);
     collidable->translationalVelocity = GLKVector3Make(0, 0, 0);
-    collidable->translationalAcceleration = GLKVector3Make(0, 0, 0);
+    collidable->translationalForce = GLKVector3Make(0, 0, 0);
     
     collidable->rotation = 0;
     collidable->rotationalVelocity = 0;
-    collidable->rotationalAcceleration = 0;
+    collidable->rotationalForce = 0;
     
     collidable->radius = radius;
     collidable->width = -1;
@@ -188,13 +188,143 @@ BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFColl
     return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
 }
 
+void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD)
+{
+    
+    GLKVector3 n = A->normals[faceIndex];
+    
+    
+    // Calculate relative velocity
+    GLKVector3 rv = GLKVector3Subtract(B->translationalVelocity, A->translationalVelocity);
+    
+    n = GLKVector3MultiplyScalar(GLKVector3Normalize(n), GLKVector3Length(rv));
+    
+    // Calculate relative velocity in terms of the normal direction
+    GLfloat velAlongNormal = GLKVector3DotProduct( rv, n );
+    
+    // Do not resolve if velocities are separating
+    if(velAlongNormal > 0)
+        return;
+    
+    // Calculate restitution
+    GLfloat e = A->restitution * B->restitution;
+    
+    // Calculate impulse scalar
+    GLfloat j = -e * velAlongNormal;
+    j /= 1 / A->translationalInertia + 1 / B->translationalInertia;
+    
+    // Apply impulse
+    GLKVector3 impulse = GLKVector3MultiplyScalar(n, j);
+    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3Negate(GLKVector3MultiplyScalar(impulse, 1 / A->translationalInertia)));
+    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(impulse, 1 / B->translationalInertia));
+    
+    
+    //GLKVector3 difference = GLKVector3Subtract(objectB->position, objectA->position);
+    
+    /*
+    GLKVector3 Vi2 = GLKVector3Project(A->translationalVelocity, GLKVector3Negate(n));
+    GLKVector3 Vi1 = GLKVector3Project(B->translationalVelocity, GLKVector3Negate(n));
+    
+    GLfloat M1 = B->translationalInertia;
+    GLfloat M2 = A->translationalInertia;
+    
+    GLfloat mcalc1 = (M1 - M2)/(M1 + M2);
+    GLKVector3 Vi1mult = GLKVector3MultiplyScalar(Vi1, mcalc1);
+    GLfloat mcalc2 = (2 * M2)/(M1 + M2);
+    GLKVector3 Vi2mult = GLKVector3MultiplyScalar(Vi2, mcalc2);
+    GLKVector3 Vf1 = GLKVector3Add(Vi1mult, Vi2mult);
+    GLKVector3 dV = GLKVector3Subtract(Vf1, Vi1);
+    
+    GLfloat e1 = A->restitution;
+    GLfloat e2 = B->restitution;
+    GLfloat calc = e1 * e2;
+    GLKVector3 cV = GLKVector3MultiplyScalar(dV, calc);
+    
+    GLKVector3 currcV = A->translationalVelocity;
+    GLKVector3 newcV = GLKVector3Add(currcV, cV);
+    
+    //B->translationalVelocity = GLKVector3MultiplyScalar(GLKVector3Normalize(n), pD);
+    //B->translationalForce = cV;
+    
+    GLfloat vi1 = GLKVector3DotProduct(B->translationalVelocity, GLKVector3MultiplyScalar( GLKVector3Normalize(n), GLKVector3Length((B->translationalVelocity)) ));
+    GLfloat vi2 = GLKVector3DotProduct(A->translationalVelocity, GLKVector3MultiplyScalar( GLKVector3Normalize(n), GLKVector3Length((A->translationalVelocity)) ));
+    GLfloat m1 = B->translationalInertia;
+    GLfloat m2 = A->translationalInertia;
+    GLfloat mc1 = (m1 - m2)/(m1 + m2);
+    GLfloat mc2 = (2 * m2)/(m1 + m2);
+    GLfloat vi1m = vi1 * mc1;
+    GLfloat vi2m = vi2 * mc2;
+    GLfloat vf1 = vi1m + vi2m;
+    GLfloat vf2 = vi2m + vi1m;
+    GLfloat dv1 = vf1 - vi1;
+    GLfloat dv2 = vf2 - vi2;
+    dv1 *= calc;
+    dv2 *= calc;
+    
+    
+    GLKVector3 nv1 = GLKVector3MultiplyScalar(GLKVector3Normalize(n), dv1);
+    GLKVector3 nv2 = GLKVector3MultiplyScalar(GLKVector3Normalize(n), dv2);
+    
+    if (!DFGeometryPolygonContainsPoint(A->numberOfVertices, A->vertices, DFGeometrySupportPoint(B, GLKVector3Negate(n)))){
+        
+        
+        //return;
+    }
+    
+    B->translationalForce = nv1;
+    A->translationalForce = GLKVector3Negate(nv1);
+    //A->translationalForce = nv2;
+     */
+}
+
+void polyVSpoly(DFCollidableData* A, DFCollidableData* B)
+{
+    GLushort fI1 = USHRT_MAX;
+    GLushort fI2 = USHRT_MAX;
+    
+    GLKVector3 s1 = GLKVector3Make(0, 0, 0);
+    GLKVector3 s2 = GLKVector3Make(0, 0, 0);
+    
+    for (int i = 0; i < A->numberOfVertices; i++)
+    {
+        // Retrieve a face normal from A
+        GLKVector3 n = A->normals[i];
+        
+        // Retrieve support point from B along -n
+        GLKVector3 s = DFGeometrySupportPoint(B, GLKVector3Negate(n));
+        
+        if (DFGeometryPolygonContainsPoint(A->numberOfVertices, A->vertices, DFGeometrySupportPoint(B, GLKVector3Negate(n)))){
+            
+        }
+    }
+}
+
+
 BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B)
 {
-    GLushort fI1;
-    GLushort fI2;
+    
+    
+    GLushort fI1 = USHRT_MAX;
+    GLushort fI2 = USHRT_MAX;
+    //polyVSpoly(A, B);
+    
     GLfloat d1 = DFGeometryPenetrationDistance(&fI1, A, B);
     GLfloat d2 = DFGeometryPenetrationDistance(&fI2, B, A);
-    return !(d1 > 0 || d2 > 0);
+    
+    if (!(d1 > 0 || d2 > 0)){
+        if (d1 > d2){
+            A->didCollide = YES;
+            B->didCollide = YES;
+            resolveCollision(A, B, fI1, d1);
+        } else {
+            A->didCollide = YES;
+            B->didCollide = YES;
+            resolveCollision(B, A, fI2, d2);
+        }
+        return YES;
+    }
+    return NO;
+    
 }
 
 void DFCollidableTransformVertices(DFCollidableData* collidable)
