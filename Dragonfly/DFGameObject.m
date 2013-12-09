@@ -105,10 +105,10 @@ void DFGameObjectReadCollisionData(DFGameObject* obj, GLfloat dT)
     //collision->translationalVelocity = GLKVector3Make(0, 0, 0);
     collision->translationalForce = GLKVector3Make(0, 0, 0);
     
-    GLfloat revRotation = -obj->rotationalVelocity * dT;
-    obj->rotation = obj->rotation + revRotation;
+    //GLfloat revRotation = -obj->rotationalVelocity * dT;
+    //obj->rotation = obj->rotation + revRotation;
     
-    obj->rotation += obj->rotationalVelocity;
+    obj->rotationalVelocity = collision->rotationalVelocity;
     
     collision->rotation = obj->rotation;
     collision->rotationalForce = 0;

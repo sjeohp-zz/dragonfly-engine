@@ -147,7 +147,7 @@ GLKVector3 DFGeometrySupportPoint(DFCollidableData* collidable, GLKVector3 dir)
     return bestVertex;
 }
 
-GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, DFCollidableData* A, DFCollidableData* B)
+GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, GLKVector3* supportPoint, DFCollidableData* A, DFCollidableData* B)
 {
     GLfloat bestDistance = -FLT_MAX;
     GLushort bestIndex;
@@ -171,6 +171,7 @@ GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, DFCollidableData* A, 
         {
             bestDistance = d;
             bestIndex = i;
+            *supportPoint = s;
         }
     }
     *faceIndex = bestIndex;
@@ -188,7 +189,7 @@ BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFColl
     return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
 }
 
-void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD)
+void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD, GLKVector3 supportPoint)
 {
     
     GLKVector3 n = A->normals[faceIndex];
@@ -215,8 +216,23 @@ void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceInd
     
     // Apply impulse
     GLKVector3 impulse = GLKVector3MultiplyScalar(n, j);
-    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3Negate(GLKVector3MultiplyScalar(impulse, 1 / A->translationalInertia)));
-    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(impulse, 1 / B->translationalInertia));
+    
+    GLKVector3 impulseA = GLKVector3Negate(impulse);
+    GLKVector3 hA = GLKVector3Subtract(A->translation, supportPoint);
+    
+    GLKVector3 tIA = GLKVector3MultiplyScalar(GLKVector3Normalize(impulseA), GLKVector3DotProduct(hA, impulseA));
+    GLfloat rIA = -GLKVector3CrossProduct(hA, impulseA).z;
+    
+    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3MultiplyScalar(tIA, 1 / A->translationalInertia));
+    A->rotationalVelocity = A->rotationalVelocity + rIA / A->rotationalInertia;
+    
+    GLKVector3 hB = GLKVector3Subtract(B->translation, supportPoint);
+    
+    GLKVector3 tIB = GLKVector3MultiplyScalar(GLKVector3Normalize(impulse), GLKVector3DotProduct(hB, impulse));
+    GLfloat rIB = -GLKVector3CrossProduct(hB, impulse).z;
+    
+    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(tIB, 1 / B->translationalInertia));
+    B->rotationalVelocity = B->rotationalVelocity + rIB / B->rotationalInertia;
     
     
     //GLKVector3 difference = GLKVector3Subtract(objectB->position, objectA->position);
@@ -277,49 +293,27 @@ void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceInd
      */
 }
 
-void polyVSpoly(DFCollidableData* A, DFCollidableData* B)
-{
-    GLushort fI1 = USHRT_MAX;
-    GLushort fI2 = USHRT_MAX;
-    
-    GLKVector3 s1 = GLKVector3Make(0, 0, 0);
-    GLKVector3 s2 = GLKVector3Make(0, 0, 0);
-    
-    for (int i = 0; i < A->numberOfVertices; i++)
-    {
-        // Retrieve a face normal from A
-        GLKVector3 n = A->normals[i];
-        
-        // Retrieve support point from B along -n
-        GLKVector3 s = DFGeometrySupportPoint(B, GLKVector3Negate(n));
-        
-        if (DFGeometryPolygonContainsPoint(A->numberOfVertices, A->vertices, DFGeometrySupportPoint(B, GLKVector3Negate(n)))){
-            
-        }
-    }
-}
-
 
 BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B)
 {
-    
-    
     GLushort fI1 = USHRT_MAX;
     GLushort fI2 = USHRT_MAX;
+    GLKVector3 s1;
+    GLKVector3 s2;
     //polyVSpoly(A, B);
     
-    GLfloat d1 = DFGeometryPenetrationDistance(&fI1, A, B);
-    GLfloat d2 = DFGeometryPenetrationDistance(&fI2, B, A);
+    GLfloat d1 = DFGeometryPenetrationDistance(&fI1, &s1, A, B);
+    GLfloat d2 = DFGeometryPenetrationDistance(&fI2, &s2, B, A);
     
     if (!(d1 > 0 || d2 > 0)){
         if (d1 > d2){
             A->didCollide = YES;
             B->didCollide = YES;
-            resolveCollision(A, B, fI1, d1);
+            resolveCollision(A, B, fI1, d1, s1);
         } else {
             A->didCollide = YES;
             B->didCollide = YES;
-            resolveCollision(B, A, fI2, d2);
+            resolveCollision(B, A, fI2, d2, s2);
         }
         return YES;
     }
