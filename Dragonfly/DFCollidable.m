@@ -189,16 +189,24 @@ BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFColl
     return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
 }
 
+
+/*
+ Rigid body physics between two oriented polygons.
+ Needs tidying up.
+ Needs to take rotational velocity at point of contact into account.
+ Needs circle vs polygon.
+ */
 void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD, GLKVector3 supportPoint)
 {
     
     GLKVector3 n = A->normals[faceIndex];
     
+    //GLKVector3 pointVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(GLKVector3Subtract(B->translation, supportPoint), tanf(B->rotationalVelocity)));
     
     // Calculate relative velocity
     GLKVector3 rv = GLKVector3Subtract(B->translationalVelocity, A->translationalVelocity);
     
-    n = GLKVector3MultiplyScalar(GLKVector3Normalize(n), GLKVector3Length(rv));
+    n = GLKVector3MultiplyScalar(GLKVector3Normalize(n), 1);//GLKVector3Length(rv));
     
     // Calculate relative velocity in terms of the normal direction
     GLfloat velAlongNormal = GLKVector3DotProduct( rv, n );
@@ -211,89 +219,35 @@ void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceInd
     GLfloat e = A->restitution * B->restitution;
     
     // Calculate impulse scalar
-    GLfloat j = -e * velAlongNormal;
-    j /= 1 / A->translationalInertia + 1 / B->translationalInertia;
+    GLfloat j = -(e + 1) * velAlongNormal;
+    //j /= (1 / A->translationalInertia + 1 / B->translationalInertia);
     
     // Apply impulse
-    GLKVector3 impulse = GLKVector3MultiplyScalar(n, j);
+    GLKVector3 impulse = GLKVector3MultiplyScalar(n, j * (A->translationalInertia / (A->translationalInertia + B->translationalInertia)));
     
-    GLKVector3 impulseA = GLKVector3Negate(impulse);
+    GLKVector3 impulseA = GLKVector3MultiplyScalar(GLKVector3Negate(n), j * (B->translationalInertia / (B->translationalInertia + A->translationalInertia)));
     GLKVector3 hA = GLKVector3Subtract(A->translation, supportPoint);
     
-    GLKVector3 tIA = GLKVector3MultiplyScalar(GLKVector3Normalize(impulseA), GLKVector3DotProduct(hA, impulseA));
-    GLfloat rIA = -GLKVector3CrossProduct(hA, impulseA).z;
+    GLKVector3 tIA = GLKVector3MultiplyScalar(impulseA, GLKVector3DotProduct(GLKVector3Normalize(hA), GLKVector3Normalize(impulseA)));
+    GLfloat rIA = (-GLKVector3CrossProduct(GLKVector3Normalize(hA), GLKVector3Normalize(impulseA)).z) * GLKVector3Length(impulseA) / GLKVector3Length(hA);
     
-    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3MultiplyScalar(tIA, 1 / A->translationalInertia));
-    A->rotationalVelocity = A->rotationalVelocity + rIA / A->rotationalInertia;
+    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3MultiplyScalar(tIA, 1));// / A->translationalInertia));
+    A->rotationalVelocity = A->rotationalVelocity + rIA ;/// A->rotationalInertia;
     
     GLKVector3 hB = GLKVector3Subtract(B->translation, supportPoint);
     
-    GLKVector3 tIB = GLKVector3MultiplyScalar(GLKVector3Normalize(impulse), GLKVector3DotProduct(hB, impulse));
-    GLfloat rIB = -GLKVector3CrossProduct(hB, impulse).z;
+    GLKVector3 tIB = GLKVector3MultiplyScalar(impulse, GLKVector3DotProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)));
+    GLfloat rIB = (-GLKVector3CrossProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)).z) * GLKVector3Length(impulse) / GLKVector3Length(hB);
     
-    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(tIB, 1 / B->translationalInertia));
-    B->rotationalVelocity = B->rotationalVelocity + rIB / B->rotationalInertia;
-    
-    
-    //GLKVector3 difference = GLKVector3Subtract(objectB->position, objectA->position);
-    
-    /*
-    GLKVector3 Vi2 = GLKVector3Project(A->translationalVelocity, GLKVector3Negate(n));
-    GLKVector3 Vi1 = GLKVector3Project(B->translationalVelocity, GLKVector3Negate(n));
-    
-    GLfloat M1 = B->translationalInertia;
-    GLfloat M2 = A->translationalInertia;
-    
-    GLfloat mcalc1 = (M1 - M2)/(M1 + M2);
-    GLKVector3 Vi1mult = GLKVector3MultiplyScalar(Vi1, mcalc1);
-    GLfloat mcalc2 = (2 * M2)/(M1 + M2);
-    GLKVector3 Vi2mult = GLKVector3MultiplyScalar(Vi2, mcalc2);
-    GLKVector3 Vf1 = GLKVector3Add(Vi1mult, Vi2mult);
-    GLKVector3 dV = GLKVector3Subtract(Vf1, Vi1);
-    
-    GLfloat e1 = A->restitution;
-    GLfloat e2 = B->restitution;
-    GLfloat calc = e1 * e2;
-    GLKVector3 cV = GLKVector3MultiplyScalar(dV, calc);
-    
-    GLKVector3 currcV = A->translationalVelocity;
-    GLKVector3 newcV = GLKVector3Add(currcV, cV);
-    
-    //B->translationalVelocity = GLKVector3MultiplyScalar(GLKVector3Normalize(n), pD);
-    //B->translationalForce = cV;
-    
-    GLfloat vi1 = GLKVector3DotProduct(B->translationalVelocity, GLKVector3MultiplyScalar( GLKVector3Normalize(n), GLKVector3Length((B->translationalVelocity)) ));
-    GLfloat vi2 = GLKVector3DotProduct(A->translationalVelocity, GLKVector3MultiplyScalar( GLKVector3Normalize(n), GLKVector3Length((A->translationalVelocity)) ));
-    GLfloat m1 = B->translationalInertia;
-    GLfloat m2 = A->translationalInertia;
-    GLfloat mc1 = (m1 - m2)/(m1 + m2);
-    GLfloat mc2 = (2 * m2)/(m1 + m2);
-    GLfloat vi1m = vi1 * mc1;
-    GLfloat vi2m = vi2 * mc2;
-    GLfloat vf1 = vi1m + vi2m;
-    GLfloat vf2 = vi2m + vi1m;
-    GLfloat dv1 = vf1 - vi1;
-    GLfloat dv2 = vf2 - vi2;
-    dv1 *= calc;
-    dv2 *= calc;
-    
-    
-    GLKVector3 nv1 = GLKVector3MultiplyScalar(GLKVector3Normalize(n), dv1);
-    GLKVector3 nv2 = GLKVector3MultiplyScalar(GLKVector3Normalize(n), dv2);
-    
-    if (!DFGeometryPolygonContainsPoint(A->numberOfVertices, A->vertices, DFGeometrySupportPoint(B, GLKVector3Negate(n)))){
-        
-        
-        //return;
-    }
-    
-    B->translationalForce = nv1;
-    A->translationalForce = GLKVector3Negate(nv1);
-    //A->translationalForce = nv2;
-     */
+    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(tIB, 1 ));
+    B->rotationalVelocity = B->rotationalVelocity + rIB ;
 }
 
 
+/*
+ Needs to check object is physical before resolving.
+ Collidables need function pointers for custom collision behaviour.
+ */
 BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B)
 {
     GLushort fI1 = USHRT_MAX;
