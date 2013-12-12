@@ -64,11 +64,6 @@ DFCollidableData* DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius)
     return collidable;
 }
 
-void DFCollidableAddPhysics(DFCollidableData* collidable, GLfloat mass, GLfloat elasticity)
-{
-    
-}
-
 GLfloat sqrf(GLfloat x) { return x * x; }
 
 GLfloat dist_sqrdf(GLKVector3 v, GLKVector3 w) { return sqrf(v.x - w.x) + sqrf(v.y - w.y); }
@@ -178,17 +173,50 @@ GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, GLKVector3* supportPo
     return bestDistance;
 }
 
-BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B)
+void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3 contact, GLfloat pD, GLKVector3 supportPoint)
 {
-    return DISTANCE_BETWEEN(A->translation.x, A->translation.y, B->translation.x, B->translation.y) < A->radius + B->radius;
+    
+    GLKVector3 n = GLKVector3Normalize(GLKVector3Subtract(B->translation, contact));
+    
+    //GLKVector3 pointVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(GLKVector3Subtract(B->translation, supportPoint), tanf(B->rotationalVelocity)));
+    
+    // Calculate relative velocity
+    GLKVector3 rv = GLKVector3Subtract(B->translationalVelocity, A->translationalVelocity);
+    
+    // Calculate relative velocity in terms of the normal direction
+    GLfloat velAlongNormal = GLKVector3DotProduct( rv, n );
+    
+    // Do not resolve if velocities are separating
+    if(velAlongNormal > 0)
+        return;
+    
+    // Calculate restitution
+    GLfloat e = A->restitution * B->restitution;
+    
+    // Calculate impulse scalar
+    GLfloat j = -(e + 1) * velAlongNormal;
+    //j /= (1 / A->translationalInertia + 1 / B->translationalInertia);
+    
+    // Apply impulse
+    GLKVector3 impulse = GLKVector3MultiplyScalar(n, j * (A->translationalInertia / (A->translationalInertia + B->translationalInertia)));
+    
+    GLKVector3 impulseA = GLKVector3MultiplyScalar(GLKVector3Negate(n), j * (B->translationalInertia / (B->translationalInertia + A->translationalInertia)));
+    GLKVector3 hA = GLKVector3Subtract(A->translation, supportPoint);
+    
+    GLKVector3 tIA = GLKVector3MultiplyScalar(impulseA, GLKVector3DotProduct(GLKVector3Normalize(hA), GLKVector3Normalize(impulseA)));
+    GLfloat rIA = (-GLKVector3CrossProduct(GLKVector3Normalize(hA), GLKVector3Normalize(impulseA)).z) * GLKVector3Length(impulseA) / GLKVector3Length(hA);
+    
+    A->translationalVelocity = GLKVector3Add(A->translationalVelocity, GLKVector3MultiplyScalar(tIA, 1));// / A->translationalInertia));
+    A->rotationalVelocity = A->rotationalVelocity + rIA ;/// A->rotationalInertia;
+    
+    GLKVector3 hB = GLKVector3Subtract(B->translation, supportPoint);
+    
+    GLKVector3 tIB = GLKVector3MultiplyScalar(impulse, GLKVector3DotProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)));
+    GLfloat rIB = (-GLKVector3CrossProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)).z) * GLKVector3Length(impulse) / GLKVector3Length(hB);
+    
+    B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(tIB, 1 ));
+    B->rotationalVelocity = B->rotationalVelocity + rIB ;
 }
-
-BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ)
-{
-    GLushort fI;
-    return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
-}
-
 
 /*
  Rigid body physics between two oriented polygons.
@@ -196,7 +224,7 @@ BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFColl
  Needs to take rotational velocity at point of contact into account.
  Needs circle vs polygon.
  */
-void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD, GLKVector3 supportPoint)
+void resolvePolygonVsPolygon(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD, GLKVector3 supportPoint)
 {
     
     GLKVector3 n = A->normals[faceIndex];
@@ -243,6 +271,16 @@ void resolveCollision(DFCollidableData* A, DFCollidableData* B, GLushort faceInd
     B->rotationalVelocity = B->rotationalVelocity + rIB ;
 }
 
+BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B)
+{
+    return DISTANCE_BETWEEN(A->translation.x, A->translation.y, B->translation.x, B->translation.y) < A->radius + B->radius;
+}
+
+BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ)
+{
+    GLushort fI;
+    return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
+}
 
 /*
  Needs to check object is physical before resolving.
@@ -263,11 +301,11 @@ BOOL DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollida
         if (d1 > d2){
             A->didCollide = YES;
             B->didCollide = YES;
-            resolveCollision(A, B, fI1, d1, s1);
+            resolvePolygonVsPolygon(A, B, fI1, d1, s1);
         } else {
             A->didCollide = YES;
             B->didCollide = YES;
-            resolveCollision(B, A, fI2, d2, s2);
+            resolvePolygonVsPolygon(B, A, fI2, d2, s2);
         }
         return YES;
     }
