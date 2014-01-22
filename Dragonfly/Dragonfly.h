@@ -13,9 +13,6 @@
 #import "DFLinkedList.h"
 #import "DFGameObject.h"
 #import "DFCollidable.h"
-#import "DFTexture.h"
-#import "DFRectangle.h"
-#import "DFEllipse.h"
 #import "DFRender.h"
 #import "DFUtil.h"
 

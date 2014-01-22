@@ -10,17 +10,14 @@
 #import <GLKit/GLKit.h>
 #import <CoreMotion/CoreMotion.h>
 
-#import "DFTexture.h"
-#import "DFRectangle.h"
-#import "DFEllipse.h"
+#import "DFRender.h"
 #import "DFCollidable.h"
 #import "DFUtil.h"
 #import "DFQuadtree.h"
 
 typedef struct DFGameObject {
-    DFTextureData*          textureData;
-    DFRectangleData*        rectangleData;
-    DFEllipseData*          ellipseData;
+    
+    DFRenderableData*       renderableData;
     DFCollidableData*       collidableData;
     
     void                    (* updateWithAttitude)(struct DFGameObject* obj, CMAttitude* attitude, GLfloat dT);
@@ -30,25 +27,22 @@ typedef struct DFGameObject {
     GLKVector3              translation;
     GLKVector3              translationalVelocity;
     GLKVector3              translationalForce;
-    GLfloat                 translationalInertia;
-    GLfloat                 translationalDrag;
-    GLfloat                 translationalMaxspeed;
+    
+    GLfloat                 volume;
+    GLfloat                 density;
+    GLfloat                 mass;
+    GLfloat                 drag;
+    GLfloat                 maxVelocity;
     
     GLfloat                 rotation;
     GLfloat                 rotationalVelocity;
     GLfloat                 rotationalForce;
-    GLfloat                 rotationalInertia;
-    GLfloat                 rotationalDrag;
-    GLfloat                 rotationalMaxspeed;
     
-    GLfloat                 elasticity;
 }   DFGameObject;
 
 DFGameObject*       DFGameObjectMake();
 
-void                DFGameObjectAddTexture(DFGameObject* obj, DFTextureData* texture);
-void                DFGameObjectAddRectangle(DFGameObject* obj, DFRectangleData* rect);
-void                DFGameObjectAddEllipse(DFGameObject* obj, DFEllipseData* ellipse);
+void                DFGameObjectAddRenderable(DFGameObject* obj, DFRenderableData* renderable);
 void                DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable);
 
 void                DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLfloat dT);

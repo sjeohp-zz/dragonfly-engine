@@ -30,21 +30,20 @@ typedef struct DFCollidableData {
     
     GLfloat                 restitution;
     
-    GLfloat                     radius;
-    GLfloat                     width;
-    GLfloat                     height;
+    GLfloat                 radius;
+    GLfloat                 width;
+    GLfloat                 height;
     
-    GLKVector3*                 vertices;
-    GLKVector3*                 normals;
-    GLushort                    numberOfVertices;
+    GLKVector3*             vertices;
+    GLKVector3*             normals;
+    GLushort                numberOfVertices;
     
-    BOOL                        didCollide;
+    BOOL                    didCollide;
     
 }   DFCollidableData;
 
 DFCollidableData*   DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfloat height);
 DFCollidableData*   DFCollidableMakeCirc(GLfloat x, GLfloat y, GLfloat radius);
-void                DFCollidableAddPhysics(DFCollidableData* collidable, GLfloat mass, GLfloat elasticity);
 BOOL                DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollidableData* B);
 BOOL                DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ);
 BOOL                DFCollidableCheckCollisionBetweenRectAndRect(DFCollidableData* A, DFCollidableData* B);

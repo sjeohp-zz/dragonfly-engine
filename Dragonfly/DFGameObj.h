@@ -10,5 +10,6 @@
 #define __Dragonfly__DFGameObj__
 
 #include <iostream>
+#include <GLKit/GLKit.h>
 
 #endif /* defined(__Dragonfly__DFGameObj__) */

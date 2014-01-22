@@ -12,9 +12,7 @@ DFGameObject* DFGameObjectMake()
 {
     DFGameObject* obj = (DFGameObject*)malloc(sizeof(DFGameObject));
     
-    obj->textureData = NULL;
-    obj->rectangleData = NULL;
-    obj->ellipseData = NULL;
+    obj->renderableData = NULL;
     obj->collidableData = NULL;
     
     obj->updateWithAttitude = NULL;
@@ -24,61 +22,20 @@ DFGameObject* DFGameObjectMake()
     obj->translation = GLKVector3Make(0, 0, 0);
     obj->translationalVelocity = GLKVector3Make(0, 0, 0);
     obj->translationalForce = GLKVector3Make(0, 0, 0);
+    obj->mass = 1;
+    obj->drag = 1;
+    obj->maxVelocity = FLT_MAX;
     
     obj->rotation = 0;
     obj->rotationalVelocity = 0;
     obj->rotationalForce = 0;
     
-    obj->translationalInertia = 1;
-    obj->translationalDrag = 1;
-    obj->rotationalInertia = 1;
-    obj->rotationalDrag = 1;
-    
-    obj->elasticity = 1;
-    
-    obj->translationalMaxspeed = FLT_MAX;
-    obj->rotationalMaxspeed = FLT_MAX;
-    
     return obj;
 }
 
-void DFGameObjectAddTexture(DFGameObject* obj, DFTextureData* texture)
+void DFGameObjectAddRenderable(DFGameObject* obj, DFRenderableData* renderable)
 {
-    DFTextureData *curr = obj->textureData;
-    if (curr == NULL){
-        obj->textureData = texture;
-    } else {
-        while (curr->next != NULL){
-            curr = curr->next;
-        }
-        curr->next = texture;
-    }
-}
-
-void DFGameObjectAddRectangle(DFGameObject* obj, DFRectangleData* rect)
-{
-    DFRectangleData *curr = obj->rectangleData;
-    if (curr == NULL){
-        obj->rectangleData = rect;
-    } else {
-        while (curr->next != NULL){
-            curr = curr->next;
-        }
-        curr->next = rect;
-    }
-}
-
-void DFGameObjectAddEllipse(DFGameObject* obj, DFEllipseData* ellipse)
-{
-    DFEllipseData *curr = obj->ellipseData;
-    if (curr == NULL){
-        obj->ellipseData = ellipse;
-    } else {
-        while (curr->next != NULL){
-            curr = curr->next;
-        }
-        curr->next = ellipse;
-    }
+    obj->renderableData = renderable;
 }
 
 void DFGameObjectAddCollidable(DFGameObject* obj, DFCollidableData* collidable)
@@ -116,46 +73,30 @@ void DFGameObjectReadCollisionData(DFGameObject* obj, GLfloat dT)
     collision->didCollide = NO;
 }
 
-void DFGameObjectUpdateRenderData(DFGameObject* obj)
+void DFGameObjectUpdateRenderableData(DFGameObject* obj)
 {
     if (obj == NULL){
         return;
     }
-    DFTextureData* texture = obj->textureData;
-    while (texture != NULL){
-        texture->translation = obj->translation;
-        texture->rotation = obj->rotation;
-        texture = texture->next;
-    }
-    DFRectangleData* rect = obj->rectangleData;
-    while (rect != NULL){
-        rect->translation = obj->translation;
-        rect->rotation = obj->rotation;
-        rect = rect->next;
-    }
-    DFEllipseData* ellipse = obj->ellipseData;
-    while (ellipse != NULL){
-        ellipse->translation = obj->translation;
-        ellipse->rotation = obj->rotation;
-        ellipse = ellipse->next;
-    }
+    DFRenderableData* data = obj->renderableData;
+    data->translation = obj->translation;
+    data->rotation = obj->rotation;
 }
 
 void DFGameObjectTransform(DFGameObject* obj, GLfloat dT)
 {
-    GLKVector3 newTV = GLKVector3Add(GLKVector3MultiplyScalar(obj->translationalVelocity, 1 - obj->translationalDrag),
-                                           GLKVector3MultiplyScalar(obj->translationalForce, 1 / obj->translationalInertia));
-    if (GLKVector3Length(newTV) > obj->translationalMaxspeed){
-        newTV = GLKVector3MultiplyScalar(newTV, obj->translationalMaxspeed / GLKVector3Length(newTV));
+    GLKVector3 newTransVel = GLKVector3Add(GLKVector3MultiplyScalar(obj->translationalVelocity, 1 - obj->drag),
+                                           GLKVector3MultiplyScalar(obj->translationalForce, 1 / obj->mass));
+    
+    if (GLKVector3Length(newTransVel) > obj->maxVelocity){
+        newTransVel = GLKVector3MultiplyScalar(newTransVel, obj->maxVelocity / GLKVector3Length(newTransVel));
     }
-    obj->translationalVelocity = newTV;
+    obj->translationalVelocity = newTransVel;
     GLKVector3 curMove = GLKVector3MultiplyScalar(obj->translationalVelocity, dT);
     obj->translation = GLKVector3Add(obj->translation, curMove);
     obj->translationalForce = GLKVector3Make(0, 0, 0);
     
-    GLfloat newRV = obj->rotationalVelocity * (1 - obj->rotationalDrag) + obj->rotationalForce / obj->rotationalInertia;
-    if (newRV > obj->rotationalMaxspeed) newRV = obj->rotationalMaxspeed;
-    if (newRV < -obj->rotationalMaxspeed) newRV = -obj->rotationalMaxspeed;
+    GLfloat newRV = obj->rotationalVelocity * (1 - obj->drag) + obj->rotationalForce / obj->mass;
     obj->rotationalVelocity = newRV;
     obj->rotation += obj->rotationalVelocity * dT;
     obj->rotationalForce = 0;
@@ -165,11 +106,11 @@ void DFGameObjectTransform(DFGameObject* obj, GLfloat dT)
         obj->collidableData->translation = obj->translation;
         obj->collidableData->translationalVelocity = obj->translationalVelocity;
         obj->collidableData->translationalForce = GLKVector3Make(0, 0, 0);
-        obj->collidableData->translationalInertia = obj->translationalInertia;
+        obj->collidableData->translationalInertia = obj->mass;
         
         obj->collidableData->rotation = obj->rotation;
         obj->collidableData->rotationalVelocity = obj->rotationalVelocity;
-        obj->collidableData->rotationalInertia = obj->rotationalInertia;
+        obj->collidableData->rotationalInertia = obj->mass;
         
         DFCollidableTransformVertices(obj->collidableData);
     }
@@ -182,7 +123,7 @@ void DFGameObjectUpdateWithAttitude(DFGameObject* obj, CMAttitude* attitude, GLf
         return;
     }
     DFGameObjectReadCollisionData(obj, dT);
-    DFGameObjectUpdateRenderData(obj);
+    DFGameObjectUpdateRenderableData(obj);
     obj->updateWithAttitude(obj, attitude, dT);
     DFGameObjectTransform(obj, dT);
 }
@@ -194,7 +135,7 @@ void DFGameObjectUpdateWithTarget(DFGameObject* obj, GLKVector3 targetVector, GL
         return;
     }
     DFGameObjectReadCollisionData(obj, dT);
-    DFGameObjectUpdateRenderData(obj);
+    DFGameObjectUpdateRenderableData(obj);
     obj->updateWithTarget(obj, targetVector, dT);
     DFGameObjectTransform(obj, dT);
 }
@@ -206,18 +147,19 @@ void DFGameObjectUpdateWithNothing(DFGameObject* obj, GLfloat dT)
         return;
     }
     DFGameObjectReadCollisionData(obj, dT);
-    DFGameObjectUpdateRenderData(obj);
+    DFGameObjectUpdateRenderableData(obj);
     obj->updateWithNothing(obj, dT);
     DFGameObjectTransform(obj, dT);
 }
 
+/*
 void DFGameObjectFree(DFGameObject* obj)
 {
     if (obj == NULL){
         return;
     }
-    if (obj->textureData != NULL){
-        DFTextureFree(obj->textureData);
+    if (obj->renderableData->texture != NULL){
+        DFTextureFree(obj->renderableData->texture);
     }
     if (obj->rectangleData != NULL){
         DFRectangleFree(obj->rectangleData);
@@ -230,3 +172,4 @@ void DFGameObjectFree(DFGameObject* obj)
     }
     free(obj);
 }
+*/

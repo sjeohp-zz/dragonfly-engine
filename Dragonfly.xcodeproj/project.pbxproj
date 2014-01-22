@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4A115D8618640C2D006B7E7E /* DFGameObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4A115D8418640C2D006B7E7E /* DFGameObj.mm */; };
+		4A115D8718640C2D006B7E7E /* DFGameObj.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A115D8518640C2D006B7E7E /* DFGameObj.h */; };
 		4A1E4A721842BEDA00FEE3A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */; };
 		4A1E4A771842BEDA00FEE3A7 /* Dragonfly.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */; };
 		4A1E4A791842BEDA00FEE3A7 /* Dragonfly.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4A781842BEDA00FEE3A7 /* Dragonfly.m */; };
@@ -38,14 +40,8 @@
 		4A1E4AB01842ED0000FEE3A7 /* DFLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */; };
 		4A1E4AB31842ED2300FEE3A7 /* DFGameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A1E4AB41842ED2300FEE3A7 /* DFGameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */; };
-		4A1E4AB71842ED5A00FEE3A7 /* DFTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A1E4AB81842ED5A00FEE3A7 /* DFTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */; };
 		4A1E4ABB1842ED8B00FEE3A7 /* DFCollidable.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A1E4ABC1842ED8B00FEE3A7 /* DFCollidable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */; };
-		4A1E4ABF1842EDD200FEE3A7 /* DFRectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A1E4AC01842EDD200FEE3A7 /* DFRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */; };
-		4A1E4AC31842EE0200FEE3A7 /* DFEllipse.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A1E4AC41842EE0200FEE3A7 /* DFEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */; };
 		4A1E4AC71842EE2B00FEE3A7 /* DFRender.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A1E4AC81842EE2B00FEE3A7 /* DFRender.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */; };
 		4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -83,6 +79,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A115D8418640C2D006B7E7E /* DFGameObj.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DFGameObj.mm; sourceTree = "<group>"; };
+		4A115D8518640C2D006B7E7E /* DFGameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGameObj.h; sourceTree = "<group>"; };
 		4A1E4A6E1842BEDA00FEE3A7 /* libDragonfly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDragonfly.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A1E4A711842BEDA00FEE3A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4A1E4A751842BEDA00FEE3A7 /* Dragonfly-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dragonfly-Prefix.pch"; sourceTree = "<group>"; };
@@ -100,14 +98,8 @@
 		4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLinkedList.m; sourceTree = "<group>"; };
 		4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFGameObject.h; sourceTree = "<group>"; };
 		4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFGameObject.m; sourceTree = "<group>"; };
-		4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFTexture.h; sourceTree = "<group>"; };
-		4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFTexture.m; sourceTree = "<group>"; };
 		4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFCollidable.h; sourceTree = "<group>"; };
 		4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFCollidable.m; sourceTree = "<group>"; };
-		4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFRectangle.h; sourceTree = "<group>"; };
-		4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFRectangle.m; sourceTree = "<group>"; };
-		4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFEllipse.h; sourceTree = "<group>"; };
-		4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFEllipse.m; sourceTree = "<group>"; };
 		4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFRender.h; sourceTree = "<group>"; };
 		4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFRender.m; sourceTree = "<group>"; };
 		4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUtil.h; sourceTree = "<group>"; };
@@ -177,16 +169,12 @@
 				4A1E4AAE1842ED0000FEE3A7 /* DFLinkedList.m */,
 				4A1E4AB11842ED2300FEE3A7 /* DFGameObject.h */,
 				4A1E4AB21842ED2300FEE3A7 /* DFGameObject.m */,
-				4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */,
-				4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */,
-				4A1E4AB51842ED5A00FEE3A7 /* DFTexture.h */,
-				4A1E4AB61842ED5A00FEE3A7 /* DFTexture.m */,
-				4A1E4ABD1842EDD200FEE3A7 /* DFRectangle.h */,
-				4A1E4ABE1842EDD200FEE3A7 /* DFRectangle.m */,
-				4A1E4AC11842EE0100FEE3A7 /* DFEllipse.h */,
-				4A1E4AC21842EE0100FEE3A7 /* DFEllipse.m */,
+				4A115D8518640C2D006B7E7E /* DFGameObj.h */,
+				4A115D8418640C2D006B7E7E /* DFGameObj.mm */,
 				4A1E4AC51842EE2B00FEE3A7 /* DFRender.h */,
 				4A1E4AC61842EE2B00FEE3A7 /* DFRender.m */,
+				4A1E4AB91842ED8B00FEE3A7 /* DFCollidable.h */,
+				4A1E4ABA1842ED8B00FEE3A7 /* DFCollidable.m */,
 				4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */,
 				4A1E4ACA1842EE4A00FEE3A7 /* DFUtil.m */,
 				4A1E4A741842BEDA00FEE3A7 /* Supporting Files */,
@@ -227,13 +215,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A115D8718640C2D006B7E7E /* DFGameObj.h in Headers */,
 				4A1E4AAB1842ECCA00FEE3A7 /* DFQuadtree.h in Headers */,
 				4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */,
 				4A1E4AC71842EE2B00FEE3A7 /* DFRender.h in Headers */,
-				4A1E4AB71842ED5A00FEE3A7 /* DFTexture.h in Headers */,
-				4A1E4AC31842EE0200FEE3A7 /* DFEllipse.h in Headers */,
 				4A1E4AAF1842ED0000FEE3A7 /* DFLinkedList.h in Headers */,
-				4A1E4ABF1842EDD200FEE3A7 /* DFRectangle.h in Headers */,
 				4A1E4A981842BF4C00FEE3A7 /* Dragonfly.h in Headers */,
 				4A1E4ABB1842ED8B00FEE3A7 /* DFCollidable.h in Headers */,
 				4A1E4AB31842ED2300FEE3A7 /* DFGameObject.h in Headers */,
@@ -353,15 +339,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A1E4AB81842ED5A00FEE3A7 /* DFTexture.m in Sources */,
 				4A1E4AB41842ED2300FEE3A7 /* DFGameObject.m in Sources */,
 				4A1E4AAC1842ECCA00FEE3A7 /* DFQuadtree.m in Sources */,
-				4A1E4AC01842EDD200FEE3A7 /* DFRectangle.m in Sources */,
 				4A1E4AC81842EE2B00FEE3A7 /* DFRender.m in Sources */,
 				4A1E4ACC1842EE4A00FEE3A7 /* DFUtil.m in Sources */,
 				4A1E4AB01842ED0000FEE3A7 /* DFLinkedList.m in Sources */,
+				4A115D8618640C2D006B7E7E /* DFGameObj.mm in Sources */,
 				4A1E4ABC1842ED8B00FEE3A7 /* DFCollidable.m in Sources */,
-				4A1E4AC41842EE0200FEE3A7 /* DFEllipse.m in Sources */,
 				4A1E4A791842BEDA00FEE3A7 /* Dragonfly.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

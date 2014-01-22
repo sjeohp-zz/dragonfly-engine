@@ -21,6 +21,8 @@ DFCollidableData* DFCollidableMakeRect(GLfloat x, GLfloat y, GLfloat width, GLfl
     collidable->rotationalVelocity = 0;
     collidable->rotationalForce = 0;
     
+    collidable->restitution = 1;
+    
     collidable->radius = -1;
     collidable->width = width;
     collidable->height = height;
@@ -68,20 +70,26 @@ GLfloat sqrf(GLfloat x) { return x * x; }
 
 GLfloat dist_sqrdf(GLKVector3 v, GLKVector3 w) { return sqrf(v.x - w.x) + sqrf(v.y - w.y); }
 
-GLfloat distanceFromLineToPoint(DFLine line, GLKVector3 p)
+GLfloat distanceFromLineToPoint(DFLine line, GLKVector3 p, GLKVector3* closestPoint)
 {
     GLfloat length_squared = dist_sqrdf(line.A, line.B);
     if (length_squared == 0) return dist_sqrdf(p, line.A);
     GLfloat t = ((p.x - line.A.x) * (line.B.x - line.A.x) + (p.y - line.A.y) * (line.B.y - line.A.y)) / length_squared;
-    if (t < 0) return dist_sqrdf(p, line.A);
-    if (t > 1) return dist_sqrdf(p, line.B);
-    closestPoint = GLKVector3Make(line.A.x + t * (line.B.x - line.A.x),
-                                  line.A.y + t * (line.B.y - line.A.y),
-                                  0);
-    return sqrtf(dist_sqrdf(p, closestPoint));
+    if (t < 0) {
+        *closestPoint = line.A;
+        return sqrtf(dist_sqrdf(p, line.A));
+    }
+    if (t > 1){
+        *closestPoint = line.B;
+        return sqrtf(dist_sqrdf(p, line.B));
+    }
+    *closestPoint = GLKVector3Make(line.A.x + t * (line.B.x - line.A.x),
+                                   line.A.y + t * (line.B.y - line.A.y),
+                                   0);
+    return sqrtf(dist_sqrdf(p, *closestPoint));
 }
 
-GLuint DFCollidableDistanceFromRectToCirc(GLushort* faceIndex, DFCollidableData* rect, DFCollidableData* circ)
+GLuint DFCollidableDistanceFromRectToCirc(DFCollidableData* rect, DFCollidableData* circ, GLKVector3* closestPoint, GLuint* faceIndex)
 {
     DFLine lines[] = {
         { rect->vertices[0], rect->vertices[1] },
@@ -92,9 +100,11 @@ GLuint DFCollidableDistanceFromRectToCirc(GLushort* faceIndex, DFCollidableData*
     GLuint distance = -1;
     GLuint d;
     for (int i = 0; i < 4; i++){
-        d = distanceFromLineToPoint(lines[i], circ->translation);
+        GLKVector3 c = GLKVector3Make(0, 0, 0);
+        d = distanceFromLineToPoint(lines[i], circ->translation, &c);
         if (d < distance){
             distance = d;
+            *closestPoint = c;
             *faceIndex = i;
         }
     }
@@ -173,10 +183,9 @@ GLfloat DFGeometryPenetrationDistance(GLushort* faceIndex, GLKVector3* supportPo
     return bestDistance;
 }
 
-void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3 contact, GLfloat pD, GLKVector3 supportPoint)
+void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3 supportPoint, GLuint faceIndex)
 {
-    
-    GLKVector3 n = GLKVector3Normalize(GLKVector3Subtract(B->translation, contact));
+    GLKVector3 n = GLKVector3Normalize(GLKVector3Subtract(B->translation, supportPoint));
     
     //GLKVector3 pointVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(GLKVector3Subtract(B->translation, supportPoint), tanf(B->rotationalVelocity)));
     
@@ -198,7 +207,7 @@ void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3
     //j /= (1 / A->translationalInertia + 1 / B->translationalInertia);
     
     // Apply impulse
-    GLKVector3 impulse = GLKVector3MultiplyScalar(n, j * (A->translationalInertia / (A->translationalInertia + B->translationalInertia)));
+    GLKVector3 impulseB = GLKVector3MultiplyScalar(n, j * (A->translationalInertia / (A->translationalInertia + B->translationalInertia)));
     
     GLKVector3 impulseA = GLKVector3MultiplyScalar(GLKVector3Negate(n), j * (B->translationalInertia / (B->translationalInertia + A->translationalInertia)));
     GLKVector3 hA = GLKVector3Subtract(A->translation, supportPoint);
@@ -211,11 +220,11 @@ void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3
     
     GLKVector3 hB = GLKVector3Subtract(B->translation, supportPoint);
     
-    GLKVector3 tIB = GLKVector3MultiplyScalar(impulse, GLKVector3DotProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)));
-    GLfloat rIB = (-GLKVector3CrossProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulse)).z) * GLKVector3Length(impulse) / GLKVector3Length(hB);
+    GLKVector3 tIB = GLKVector3MultiplyScalar(impulseB, GLKVector3DotProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulseB)));
+    GLfloat rIB = (-GLKVector3CrossProduct(GLKVector3Normalize(hB), GLKVector3Normalize(impulseB)).z) * GLKVector3Length(impulseB) / GLKVector3Length(hB);
     
     B->translationalVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(tIB, 1 ));
-    B->rotationalVelocity = B->rotationalVelocity + rIB ;
+    B->rotationalVelocity = B->rotationalVelocity + rIB;
 }
 
 /*
@@ -226,7 +235,6 @@ void resolvePolygonVsCircle(DFCollidableData* A, DFCollidableData* B, GLKVector3
  */
 void resolvePolygonVsPolygon(DFCollidableData* A, DFCollidableData* B, GLushort faceIndex, GLfloat pD, GLKVector3 supportPoint)
 {
-    
     GLKVector3 n = A->normals[faceIndex];
     
     //GLKVector3 pointVelocity = GLKVector3Add(B->translationalVelocity, GLKVector3MultiplyScalar(GLKVector3Subtract(B->translation, supportPoint), tanf(B->rotationalVelocity)));
@@ -278,8 +286,15 @@ BOOL DFCollidableCheckCollisionBetweenCircAndCirc(DFCollidableData* A, DFCollida
 
 BOOL DFCollidableCheckCollisionBetweenRectAndCirc(DFCollidableData* rect, DFCollidableData* circ)
 {
-    GLushort fI;
-    return DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) || DFCollidableDistanceFromRectToCirc(&fI, rect, circ) <= circ->radius;
+    GLKVector3 contact;
+    GLuint faceIndex;
+    // DFGeometryPolygonContainsPoint(rect->numberOfVertices, rect->vertices, circ->translation) ||
+    
+    if (DFCollidableDistanceFromRectToCirc(rect, circ, &contact, &faceIndex) <= circ->radius){
+        resolvePolygonVsCircle(rect, circ, contact, faceIndex);
+        return YES;
+    }
+    return NO;
 }
 
 /*
@@ -340,59 +355,6 @@ void DFCollidableTransformVertices(DFCollidableData* collidable)
     collidable->normals[1] = DFGeometryNormal(collidable->vertices[1], collidable->vertices[2]);
     collidable->normals[2] = DFGeometryNormal(collidable->vertices[2], collidable->vertices[3]);
     collidable->normals[3] = DFGeometryNormal(collidable->vertices[3], collidable->vertices[0]);
-}
-
-/*
-void phys()
-{
-    GLKVector3 difference = GLKVector3Subtract(objectB->position, objectA->position);
-    
-    GLKVector3 Vi1 = GLKVector3Project(objectA->velocity, difference);
-    GLKVector3 Vi2 = GLKVector3Project(objectB->velocity, difference);
-    
-    GLfloat M1 = objectA->mass;
-    GLfloat M2 = objectB->mass;
-    
-    GLfloat mcalc1 = (M1 - M2)/(M1 + M2);
-    GLKVector3 Vi1mult = GLKVector3MultiplyScalar(Vi1, mcalc1);
-    GLfloat mcalc2 = (2 * M2)/(M1 + M2);
-    GLKVector3 Vi2mult = GLKVector3MultiplyScalar(Vi2, mcalc2);
-    GLKVector3 Vf1 = GLKVector3Add(Vi1mult, Vi2mult);
-    GLKVector3 dV = GLKVector3Subtract(Vf1, Vi1);
-    
-    GLfloat e1 = objectA->elasticity;
-    GLfloat e2 = objectB->elasticity;
-    GLfloat calc = e1 * e2;
-    GLKVector3 cV = GLKVector3MultiplyScalar(dV, calc);
-    
-    GLKVector3 currcV = objectA->velocity;
-    GLKVector3 newcV = GLKVector3Add(currcV, cV);
-    
-    objectA->velocity = newcV;
-    
-    objectA->didCollide = YES;
-}
- */
-
-void DFCollidablePhysics(DFCollidableData* objectA, DFCollidableData* objectB)
-{
-    if (objectA->radius != -1){
-        if (objectB->radius != -1){
-            
-            //circle vs circle
-        } else {
-            
-            //circle vs rectangle
-        }
-    } else {
-        if (objectB->radius != -1){
-            
-            //rectangle vs circle
-        } else {
-            
-            //rectangle vs rectangle
-        }
-    }
 }
 
 void DFCollidableCollisionBetween(DFCollidableData* objA, DFCollidableData* objB)
