@@ -1,36 +1,13 @@
 //
-//  DFUtil.h
+//  DFUtil.m
 //  Dragonfly
 //
 //  Created by Joseph on 25/11/13.
 //  Copyright (c) 2013 Joseph Mark. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
+#import "DFUtil.h"
 
-#define DISTANCE_BETWEEN(Ax, Ay, Bx, By)    sqrtf((Ax - Bx) * (Ax - Bx) + (Ay - By) * (Ay - By))
-#define CLOCKWISE(A , B)                      A.y * B.x < A.x * B.y ? YES : NO
-
-class LineSegment {
-public:
-    LineSegment(float vertxA, float vertyA, float vertxB, float vertyB)
-    : ax(vertxA), ay(vertyA), bx(vertxB), by(vertyB)
-    {}
-    const float ax;
-    const float ay;
-    const float bx;
-    const float by;
-};
-
-bool poly_contains_pnt(int nvert, float *vertx, float *verty, float pntx, float pnty);
-bool poly_contains_poly(int nverta, float* ax, float* ay, int nvertb, float* bx, float* by);
-float sqrf(float x);
-float dist_sqrdf(float vx, float vy, float wx, float wy);
-float dist_line_point(LineSegment line, float px, float py);
-float dist_line_point(LineSegment line, float px, float py, GLKVector2* closestPnt);
-GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float circy);
-GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float circy, GLKVector2* closestPnt, GLuint* faceIndex);
 
 bool poly_contains_pnt(int nvert, float *vertx, float *verty, float pntx, float pnty)
 {
