@@ -31,12 +31,12 @@
 		4A1E4A8C1842BEDA00FEE3A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A1E4A8A1842BEDA00FEE3A7 /* InfoPlist.strings */; };
 		4A1E4A8E1842BEDA00FEE3A7 /* DragonflyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E4A8D1842BEDA00FEE3A7 /* DragonflyTests.m */; };
 		4A1E4A981842BF4C00FEE3A7 /* Dragonfly.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A2A1DF218BB2F15009FD630 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2A1DF118BB2F15009FD630 /* GLKit.framework */; };
 		4A2A1DF418BB2F1F009FD630 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2A1DF318BB2F1F009FD630 /* libstdc++.dylib */; };
 		4A2A1DF618BB2F2A009FD630 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2A1DF518BB2F2A009FD630 /* OpenGLES.framework */; };
 		4A2A1E0018BB3734009FD630 /* GameObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A2A1DFE18BB3734009FD630 /* GameObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A2A1E0A18BF2F41009FD630 /* Quadtree.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A2A1E0218BC71E9009FD630 /* Quadtree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A2A1E3718BF4EEB009FD630 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A2A1E3518BF4EEB009FD630 /* Util.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,12 +80,12 @@
 		4A1E4A891842BEDA00FEE3A7 /* DragonflyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DragonflyTests-Info.plist"; sourceTree = "<group>"; };
 		4A1E4A8B1842BEDA00FEE3A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4A1E4A8D1842BEDA00FEE3A7 /* DragonflyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DragonflyTests.m; sourceTree = "<group>"; };
-		4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUtil.h; sourceTree = "<group>"; };
 		4A2A1DF118BB2F15009FD630 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		4A2A1DF318BB2F1F009FD630 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		4A2A1DF518BB2F2A009FD630 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		4A2A1DFE18BB3734009FD630 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		4A2A1E0218BC71E9009FD630 /* Quadtree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Quadtree.h; sourceTree = "<group>"; };
+		4A2A1E3518BF4EEB009FD630 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,7 @@
 				4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */,
 				4A2A1E0218BC71E9009FD630 /* Quadtree.h */,
 				4A2A1DFE18BB3734009FD630 /* GameObject.h */,
-				4A1E4AC91842EE4A00FEE3A7 /* DFUtil.h */,
+				4A2A1E3518BF4EEB009FD630 /* Util.h */,
 				4A1E4A741842BEDA00FEE3A7 /* Supporting Files */,
 			);
 			path = Dragonfly;
@@ -191,7 +191,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A1E4ACB1842EE4A00FEE3A7 /* DFUtil.h in Headers */,
+				4A2A1E3718BF4EEB009FD630 /* Util.h in Headers */,
 				4A2A1E0018BB3734009FD630 /* GameObject.h in Headers */,
 				4A1E4A981842BF4C00FEE3A7 /* Dragonfly.h in Headers */,
 				4A2A1E0A18BF2F41009FD630 /* Quadtree.h in Headers */,
