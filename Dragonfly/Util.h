@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Joseph Mark. All rights reserved.
 //
 
+#ifndef Dragonfly_Util_h
+#define Dragonfly_Util_h
+
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
@@ -136,3 +139,5 @@ GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float 
     }
     return distance;
 }
+
+#endif
