@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Joseph Mark. All rights reserved.
 //
 
-#import "GameObject.h"
+#import "Physics.h"
+#import "Rendering.h"
 #import "Quadtree.h"
 #import "Util.h"
 

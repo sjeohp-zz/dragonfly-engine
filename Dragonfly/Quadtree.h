@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "GameObject.h"
+#include "Physics.h"
 #include "Util.h"
 
 typedef std::shared_ptr<PhysicsComponent> cmpt_ptr;

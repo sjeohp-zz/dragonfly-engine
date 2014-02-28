@@ -86,6 +86,8 @@
 		4A2A1DFE18BB3734009FD630 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		4A2A1E0218BC71E9009FD630 /* Quadtree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Quadtree.h; sourceTree = "<group>"; };
 		4A2A1E3518BF4EEB009FD630 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		7CA39DAE18C00C810041FCFB /* Physics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Physics.h; sourceTree = "<group>"; };
+		7CA39DAF18C00D120041FCFB /* Rendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rendering.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,7 +153,7 @@
 			children = (
 				4A1E4A761842BEDA00FEE3A7 /* Dragonfly.h */,
 				4A2A1E0218BC71E9009FD630 /* Quadtree.h */,
-				4A2A1DFE18BB3734009FD630 /* GameObject.h */,
+				7CA39DAC18C00C430041FCFB /* GameObject */,
 				4A2A1E3518BF4EEB009FD630 /* Util.h */,
 				4A1E4A741842BEDA00FEE3A7 /* Supporting Files */,
 			);
@@ -182,6 +184,16 @@
 				4A1E4A8A1842BEDA00FEE3A7 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7CA39DAC18C00C430041FCFB /* GameObject */ = {
+			isa = PBXGroup;
+			children = (
+				4A2A1DFE18BB3734009FD630 /* GameObject.h */,
+				7CA39DAE18C00C810041FCFB /* Physics.h */,
+				7CA39DAF18C00D120041FCFB /* Rendering.h */,
+			);
+			name = GameObject;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

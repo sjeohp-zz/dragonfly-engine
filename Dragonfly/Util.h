@@ -12,8 +12,7 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
-#define DISTANCE_BETWEEN(Ax, Ay, Bx, By)    sqrtf((Ax - Bx) * (Ax - Bx) + (Ay - By) * (Ay - By))
-#define CLOCKWISE(A , B)                      A.y * B.x < A.x * B.y ? YES : NO
+#define CLOCKWISE(A , B) A.y * B.x < A.x * B.y ? YES : NO
 
 class LineSegment {
 public:
@@ -34,6 +33,7 @@ float dist_line_point(LineSegment line, float px, float py);
 float dist_line_point(LineSegment line, float px, float py, GLKVector2* closestPnt);
 GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float circy);
 GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float circy, GLKVector2* closestPnt, GLuint* faceIndex);
+GLuint dist_circ_circ(float ax, float ay, float bx, float by);
 
 bool poly_contains_pnt(int nvert, float *vertx, float *verty, float pntx, float pnty)
 {
@@ -138,6 +138,11 @@ GLuint dist_poly_circ(int nvert, float* vertx, float* verty, float circx, float 
         *faceIndex = nvert-1;
     }
     return distance;
+}
+
+GLuint dist_circ_circ(float ax, float ay, float bx, float by)
+{
+    return sqrtf((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
 }
 
 #endif
