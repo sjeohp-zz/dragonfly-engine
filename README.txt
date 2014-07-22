@@ -1,3 +1,2 @@
-A minimal game engine, originally written in C when I was learning C, now being rewritten in C++ while I learn C++.
-
-Collision detection and physics all written from scratch.
+2D collision detection and resolution involving circles / n-sided, convex, arbitrarily rotated shapes.
+Takes angular momentum into account when resolving collisions.
